@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🤖 AI 면접관 — Live Demo</title>
   <meta name="description" content="랜덤 출제 · 실시간 피드백 · 5단계 모의 면접 시뮬레이션" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="characters.css" />
   <link rel="stylesheet" href="demo.css" />
 </head>
@@ -60,15 +62,26 @@
 
       <div class="setup-card">
         <h3 class="setup-title">면접 설정</h3>
+
+        <div class="engine-picker">
+          <button type="button" class="engine-card is-active" data-engine="ai">
+            <span class="engine-card-icon">🤖</span>
+            <strong>AI 면접</strong>
+            <small>GPT-4o mini · 자유 답변</small>
+            <span class="engine-card-badge">Recommended</span>
+          </button>
+          <button type="button" class="engine-card" data-engine="classic">
+            <span class="engine-card-icon">🎮</span>
+            <strong>연습 모드</strong>
+            <small>80+ 선택형 · 오프라인</small>
+          </button>
+        </div>
+        <select id="engineSelect" hidden aria-hidden="true">
+          <option value="ai">ai</option>
+          <option value="classic">classic</option>
+        </select>
+
         <div class="setup-grid">
-          <label class="field">
-            <span>🧠 면접 엔진</span>
-            <select id="engineSelect">
-              <option value="ai">🤖 AI 면접 (GPT-4o mini)</option>
-              <option value="classic">🎮 연습 (선택형)</option>
-            </select>
-          </label>
-          <label class="field">
             <span>💼 지원 직무</span>
             <select id="jobSelect"></select>
           </label>
@@ -142,10 +155,13 @@
             <div class="hud-avatar-wrap" id="hudAvatar"></div>
             <div>
               <span id="hudName">김하린</span>
-              <small>면접 진행 중</small>
+              <small id="hudSub">면접 진행 중</small>
             </div>
           </div>
-          <span class="hud-mood" id="hudMood">😊</span>
+          <div class="hud-badges">
+            <span class="ai-provider-badge" id="aiProviderBadge" hidden>GPT-4o mini</span>
+            <span class="hud-mood" id="hudMood">😊</span>
+          </div>
         </div>
         <div class="hud-meters">
           <div class="meter">
@@ -277,6 +293,7 @@
   <script src="questions.js"></script>
   <script src="characters.js"></script>
   <script src="ai-client.js"></script>
+  <script src="polish.js"></script>
   <script src="demo.js"></script>
 </body>
 </html>

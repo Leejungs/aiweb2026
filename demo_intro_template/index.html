@@ -4,26 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🤖 AI 면접관 — by &lt;본인 익명 ID&gt;</title>
-  <meta name="description" content="AI 면접관 기반 모의 면접 및 실시간 피드백 서비스. 직무별 맞춤 질문과 답변 분석으로 면접 실력을 키우세요." />
+  <meta name="description" content="GPT-4o mini 기반 AI 면접관. 직무별 맞춤 질문, 실시간 피드백, 3D 면접실 시뮬레이션." />
+  <meta property="og:title" content="AI 면접관 — 모의 면접 & 실시간 피드백" />
+  <meta property="og:description" content="5단계 AI 면접 · 3D 치비 캐릭터 · 역량 리포트" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="demo/characters.css" />
 </head>
 <body>
 
   <header class="hero">
+    <div class="hero-noise" aria-hidden="true"></div>
     <div class="hero-bg" aria-hidden="true">
       <span class="orb orb-1"></span>
       <span class="orb orb-2"></span>
       <span class="orb orb-3"></span>
+      <span class="orb orb-4"></span>
     </div>
     <div class="container hero-inner">
-      <p class="hero-eyebrow">2026 AI 웹 융합 · 취업 준비 솔루션</p>
-      <h1><span class="hero-icon">🤖</span> AI 면접관</h1>
-      <p class="tagline">AI 면접관 기반 모의 면접 및 실시간 피드백 서비스</p>
+      <p class="hero-eyebrow">2026 AI 웹 융합 · Week 9 Showcase</p>
+      <h1><span class="hero-icon">🤖</span> <span class="gradient-text">AI 면접관</span></h1>
+      <p class="tagline">GPT-4o mini가 질문하고, 평가하고, 코칭하는 <strong>1:1 모의 면접</strong></p>
       <div class="hero-pills">
-        <span>⚡ 실시간 피드백</span>
-        <span>🎲 랜덤 질문 80+</span>
+        <span>🤖 GPT-4o mini</span>
+        <span>✨ 3D 면접실</span>
         <span>📊 역량 리포트</span>
+        <span>🏅 업적 · XP</span>
       </div>
       <div class="hero-3d-chars" aria-hidden="true">
         <div class="hero-char-slot" id="heroInterviewer"></div>
@@ -35,20 +42,52 @@
 
   <main class="container">
 
-    <section class="demo-card">
+    <section class="stats-banner reveal">
+      <div class="stat-block">
+        <strong data-count="80" data-suffix="+">0</strong>
+        <span>면접 질문 풀</span>
+      </div>
+      <div class="stat-block">
+        <strong data-count="5">0</strong>
+        <span>단계 시뮬레이션</span>
+      </div>
+      <div class="stat-block">
+        <strong data-count="3">0</strong>
+        <span>AI 면접관</span>
+      </div>
+      <div class="stat-block">
+        <strong>24/7</strong>
+        <span>언제든 연습</span>
+      </div>
+    </section>
+
+    <section class="demo-card reveal">
       <div class="demo-card-label">
-        <span class="live-dot"></span> Live Demo Preview
+        <span class="live-dot"></span> Interactive Live Demo
       </div>
 
-      <div class="mock-preview mock-preview-3d" aria-hidden="true">
-        <div class="mock-3d-label">✨ 3D 면접실 프리뷰</div>
-        <div class="mock-3d-scene">
-          <div class="mock-3d-floor"></div>
-          <div class="mock-3d-desk"></div>
-          <div class="mock-3d-chars">
-            <div class="char-slot char-slot--sm" id="mockIv"></div>
-            <div class="char-slot char-slot--sm" id="mockPl"></div>
+      <div class="demo-showcase">
+        <div class="showcase-screen">
+          <div class="showcase-bar">
+            <span class="mock-dot red"></span><span class="mock-dot yellow"></span><span class="mock-dot green"></span>
+            <span class="showcase-url">aiweb2026.site/demo</span>
           </div>
+          <div class="showcase-body">
+            <div class="showcase-hud">
+              <span>💪 78</span><span>❤️ 85</span><span class="showcase-live">● LIVE</span>
+            </div>
+            <div class="showcase-room" aria-hidden="true">
+              <div class="char-slot char-slot--sm" id="mockIv"></div>
+              <div class="char-slot char-slot--sm" id="mockPl"></div>
+            </div>
+            <div class="showcase-bubble">"프로젝트에서 가장 어려웠던 기술적 도전은?"</div>
+            <div class="showcase-feedback">✓ STAR 구조 · 구체적 수치 — 좋은 답변!</div>
+          </div>
+        </div>
+        <div class="showcase-tags">
+          <span>🎮 연습 모드</span>
+          <span>🤖 AI 모드</span>
+          <span>⏱ 타이머</span>
         </div>
       </div>
 
@@ -62,7 +101,12 @@
       </div>
     </section>
 
-    <section class="highlights">
+    <section class="highlights reveal">
+      <article class="highlight-card highlight-card--featured">
+        <span class="highlight-icon">🤖</span>
+        <strong>GPT-4o mini AI 면접</strong>
+        <p>매번 다른 질문 · 자유 서술 답변 · AI 실시간 코칭</p>
+      </article>
       <article class="highlight-card">
         <span class="highlight-icon">✨</span>
         <strong>3D 치비 면접실</strong>
@@ -70,22 +114,41 @@
       </article>
       <article class="highlight-card">
         <span class="highlight-icon">🎯</span>
-        <strong>5단계 시뮬레이션</strong>
-        <p>자기소개부터 역질문까지 실전 흐름 그대로</p>
+        <strong>5단계 실전 흐름</strong>
+        <p>자기소개 → 경험 → 협업 → 직무 → 마무리</p>
       </article>
       <article class="highlight-card">
-        <span class="highlight-icon">👥</span>
-        <strong>3명의 AI 면접관</strong>
-        <p>인성·기술·PM 스타일 면접관 선택</p>
-      </article>
-      <article class="highlight-card">
-        <span class="highlight-icon">🔥</span>
-        <strong>3가지 난이도</strong>
-        <p>연습 · 실전 · 압박 모드 + 타이머</p>
+        <span class="highlight-icon">📊</span>
+        <strong>역량 · 업적 · XP</strong>
+        <p>4대 역량 분석, 업적 배지, 레벨업 시스템</p>
       </article>
     </section>
 
-    <section class="usecases">
+    <section class="compare reveal">
+      <h2 class="section-title"><span>⚡</span> 왜 AI 면접관?</h2>
+      <div class="compare-grid">
+        <div class="compare-col compare-col--bad">
+          <h3>😰 기존 면접 준비</h3>
+          <ul>
+            <li>혼자 거울 앞 연습</li>
+            <li>피드백 없이 반복</li>
+            <li>질문 예측 어려움</li>
+            <li>비용 · 시간 부담</li>
+          </ul>
+        </div>
+        <div class="compare-col compare-col--good">
+          <h3>🤖 AI 면접관</h3>
+          <ul>
+            <li>3D 면접관과 1:1 대화</li>
+            <li>답변마다 즉시 AI 피드백</li>
+            <li>직무·면접관별 맞춤 질문</li>
+            <li>24/7 무료 연습 (데모)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="usecases reveal">
       <h2 class="section-title"><span>🎯</span> 어디에 쓰나</h2>
       <ul class="usecase-list">
         <li>
@@ -99,7 +162,7 @@
           <span class="usecase-icon">💼</span>
           <div>
             <strong>이직 준비자</strong>
-            <span>경력직 면접에서 자주 나오는 STAR·기술·인성 질문을 반복 연습합니다.</span>
+            <span>STAR·기술·인성 질문을 AI 피드백과 함께 반복 연습합니다.</span>
           </div>
         </li>
         <li>
@@ -113,61 +176,51 @@
           <span class="usecase-icon">✨</span>
           <div>
             <strong>자기 점검</strong>
-            <span>답변마다 강점·개선점·추천 표현을 받아 말하기 습관을 교정합니다.</span>
+            <span>강점·개선점·모범 답변을 받아 말하기 습관을 교정합니다.</span>
           </div>
         </li>
       </ul>
     </section>
 
-    <section class="flow">
+    <section class="flow reveal">
       <h2 class="section-title"><span>📋</span> 사용 흐름</h2>
       <ol class="flow-steps">
-        <li><span class="step-num">1</span><div><strong>직무 · 면접관 · 모드</strong><span>5가지 직무, 3명 면접관, 난이도 선택</span></div></li>
-        <li><span class="step-num">2</span><div><strong>5단계 모의 면접</strong><span>매번 다른 질문, 이지선다로 답변</span></div></li>
-        <li><span class="step-num">3</span><div><strong>실시간 피드백</strong><span>강점 · 개선 · 모범 답변 즉시 확인</span></div></li>
-        <li><span class="step-num">4</span><div><strong>HUD · 힌트 · 타이머</strong><span>자신감·호감도 게이지로 몰입 연습</span></div></li>
-        <li><span class="step-num">5</span><div><strong>종합 리포트</strong><span>역량 분석 · 업적 · 문항별 피드백</span></div></li>
+        <li><span class="step-num">1</span><div><strong>면접 설정</strong><span>직무 · 면접관 · AI/연습 모드 · 난이도</span></div></li>
+        <li><span class="step-num">2</span><div><strong>5단계 AI 면접</strong><span>맞춤 질문 · 자유 답변 또는 선택형</span></div></li>
+        <li><span class="step-num">3</span><div><strong>실시간 AI 피드백</strong><span>등급 · 코멘트 · 모범 답변 즉시 확인</span></div></li>
+        <li><span class="step-num">4</span><div><strong>HUD · 힌트 · 타이머</strong><span>자신감·호감도 · 콤보 · XP</span></div></li>
+        <li><span class="step-num">5</span><div><strong>종합 리포트</strong><span>역량 차트 · 업적 · 문항별 로그</span></div></li>
       </ol>
     </section>
 
-    <section class="stack-section">
+    <section class="stack-section reveal">
       <h2 class="section-title"><span>🛠</span> Tech Stack</h2>
       <ul class="stack">
         <li>OpenAI GPT-4o mini</li>
         <li>Cloudflare Workers AI</li>
+        <li>CSS 3D · Vanilla JS</li>
+        <li>Cloudflare Pages</li>
         <li>LangChain</li>
-        <li>Gradio</li>
-        <li>Whisper STT</li>
-        <li>FastAPI</li>
-        <li>Docker</li>
-        <li>Oracle Always Free</li>
-        <li>GitHub Actions</li>
+        <li>FastAPI · Docker</li>
+        <li>Oracle Cloud</li>
       </ul>
     </section>
 
-    <section class="howto">
+    <section class="howto reveal">
       <h2 class="section-title"><span>🧠</span> 어떻게 만들었나</h2>
       <div class="howto-box">
         <p>
           취업·이직 준비생을 위한 <strong>AI 면접관 기반 모의 면접 서비스</strong>입니다.
-          지원 직무와 경력 수준에 맞는 면접 질문을 생성하고, 답변에 대한 <strong>실시간 피드백</strong>을 제공합니다.
+          GPT-4o mini가 직무·면접관 페르소나에 맞는 질문을 생성하고, 답변을 실시간 평가합니다.
         </p>
         <p>
-          OpenAI GPT-4o mini API로 면접 질문을 생성하고, 답변에 대한 <strong>실시간 AI 피드백</strong>을 제공합니다.
-          Cloudflare Pages 배포 시 Workers AI도 자동 지원하며, 연습 모드에서는 기존 선택형 시뮬레이션도 이용할 수 있습니다.
-        </p>
-        <p>
-          Gradio·FastAPI 웹 UI에서 면접 세션을 진행하며, Docker로 Oracle Cloud에 배포합니다.
-          (10주차 풀스택 버전 예정)
-        </p>
-        <p>
-          사용자는 <strong>직무·경력</strong>을 입력하면 AI 면접관이 질문을 던지고,
-          답변마다 <strong>강점 · 개선점 · 추천 표현</strong>을 실시간으로 받을 수 있습니다.
+          프론트는 <strong>순수 HTML/CSS/JS</strong>로 3D 치비 캐릭터·면접실·HUD·업적 시스템을 구현했고,
+          Cloudflare Pages Functions로 AI API를 프록시합니다. 연습 모드는 80+ 사전 제작 선택형 시나리오를 제공합니다.
         </p>
       </div>
     </section>
 
-    <section id="comments" class="comments">
+    <section id="comments" class="comments reveal">
       <h2 class="section-title"><span>💬</span> 이 프로젝트 어떠세요?</h2>
       <p class="comments-note">
         GitHub 계정으로 로그인하면 댓글이 본인 리포의 GitHub Discussions에 자동 저장됩니다.
@@ -192,14 +245,17 @@
   </main>
 
   <footer>
-    <div class="container">
+    <div class="container footer-inner">
+      <p class="footer-brand">🤖 AI 면접관</p>
       <p>
-        2026 AI 웹 융합 · 9주차 데모 소개 페이지 ·
+        2026 AI 웹 융합 · 9주차 Showcase ·
         <a href="https://aiweb2026.site">aiweb2026.site</a>
       </p>
     </div>
   </footer>
+
   <script src="demo/characters.js"></script>
+  <script src="intro.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderCharacter(document.getElementById('heroInterviewer'), 'interviewer', 'harin', 'speaking');

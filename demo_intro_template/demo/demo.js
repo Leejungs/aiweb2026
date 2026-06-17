@@ -561,6 +561,7 @@ function applyChoiceResult(choice, fromTimeout) {
 
   $('choicePanel').hidden = true;
   $('feedbackPanel').hidden = false;
+  $('feedbackPanel').className = `feedback-panel glass-panel feedback-glow feedback-glow--${choice.grade}`;
 
   $('reactionEmoji').textContent = iv.reactions[choice.grade];
   $('feedbackHeader').className = `feedback-header ${GRADE_CLASS[choice.grade]}`;
@@ -666,17 +667,24 @@ function showResult() {
 
   $('resultScore').innerHTML = `
     ${finalPct >= 75 ? '<span class="trophy-3d">🏆</span>' : ''}
-    <div class="score-circle">${finalPct}<span>점</span></div>
+    ${typeof renderScoreRing === 'function' ? renderScoreRing(finalPct) : `<div class="score-circle">${finalPct}<span>점</span></div>`}
     <p class="score-grade">${grade}</p>
     <p class="score-sub">${JOBS[state.job].icon} ${JOBS[state.job].label} · ${getMode().label}${isAIMode() ? ' · 🤖 AI' : ''} · ${bestCount}/${TOTAL_STEPS} 좋은 답변</p>`;
 
+  if (typeof playScoreRing === 'function') playScoreRing(finalPct);
+  else if (typeof animateScore === 'function') animateScore(document.querySelector('.score-circle'), finalPct);
+
   if (finalPct >= 75) launchConfetti();
   addXP(Math.round(finalPct / 3));
+  if (typeof showToast === 'function') {
+    showToast(finalPct >= 85 ? '🎉 훌륭한 면접이었어요!' : finalPct >= 60 ? '💪 조금만 더!' : '📚 다시 도전해 보세요', finalPct >= 60 ? 'success' : 'info');
+  }
 
   $('skillRadar').innerHTML = Object.entries(skills).map(([k, v]) => {
     const labels = { structure: '구조력', communication: '소통', technical: '직무', motivation: '동기' };
     return `<div class="skill-bar"><span>${labels[k]}</span><div class="skill-track"><div class="skill-fill" style="width:${v}%"></div></div><span>${v}</span></div>`;
   }).join('');
+  if (typeof staggerSkillBars === 'function') staggerSkillBars();
 
   $('resultLog').innerHTML = state.picks.map((p) => `
     <div class="log-item">
@@ -749,6 +757,11 @@ function beginInterview() {
 
   showScreen('play');
   $('hintToast').hidden = true;
+  const badge = $('aiProviderBadge');
+  if (badge) badge.hidden = !isAIMode();
+  if (typeof showToast === 'function') {
+    showToast(isAIMode() ? '🤖 AI 면접을 시작합니다' : '🎮 연습 모드를 시작합니다', 'success');
+  }
   renderStep();
 }
 
