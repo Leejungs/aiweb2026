@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🤖 AI 면접관 — Live Demo</title>
+  <meta name="description" content="AI 면접관과 함께 모의 면접을 진행하고 실시간 피드백을 받아보세요." />
+  <link rel="stylesheet" href="demo.css" />
+</head>
+<body>
+
+  <header class="demo-header">
+    <div class="demo-header-inner">
+      <a class="back-link" href="../index.html">← 인트로로</a>
+      <h1>🤖 AI 면접관</h1>
+      <span class="demo-badge">Live Demo</span>
+    </div>
+  </header>
+
+  <div class="demo-layout">
+
+    <!-- 사이드바: 설정 -->
+    <aside class="sidebar" id="sidebar">
+      <h2>면접 설정</h2>
+
+      <label class="field">
+        <span>지원 직무</span>
+        <select id="jobSelect">
+          <option value="backend">백엔드 개발자</option>
+          <option value="frontend">프론트엔드 개발자</option>
+          <option value="pm">프로덕트 매니저</option>
+          <option value="data">데이터 분석가</option>
+          <option value="marketing">마케팅</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>경력 수준</span>
+        <select id="levelSelect">
+          <option value="junior">신입 (0~1년)</option>
+          <option value="mid">경력 (2~5년)</option>
+          <option value="senior">시니어 (5년+)</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>면접 유형</span>
+        <select id="typeSelect">
+          <option value="general">인성 + 직무 혼합</option>
+          <option value="technical">기술 면접</option>
+          <option value="behavioral">인성 면접 (STAR)</option>
+        </select>
+      </label>
+
+      <button class="btn-start" id="btnStart" type="button">▶ 면접 시작</button>
+
+      <div class="sidebar-info">
+        <h3>실시간 피드백</h3>
+        <ul>
+          <li>답변마다 강점 분석</li>
+          <li>개선이 필요한 부분</li>
+          <li>추천 표현 제안</li>
+        </ul>
+      </div>
+
+      <div class="progress-box" id="progressBox" hidden>
+        <span class="progress-label">진행률</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="progress-text" id="progressText">0 / 5</span>
+      </div>
+    </aside>
+
+    <!-- 메인: 면접 영역 -->
+    <main class="interview-area">
+
+      <!-- 시작 전 안내 -->
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">🤖</div>
+        <h2>AI 면접관 모의 면접</h2>
+        <p>왼쪽에서 <strong>직무·경력·면접 유형</strong>을 선택한 뒤 <strong>면접 시작</strong>을 눌러주세요.</p>
+        <p class="welcome-sub">AI 면접관이 질문을 던지고, 답변마다 <strong>실시간 피드백</strong>을 제공합니다.<br>총 5문항 후 종합 리포트를 확인할 수 있습니다.</p>
+      </div>
+
+      <!-- 면접 진행 -->
+      <div class="session" id="session" hidden>
+        <div class="chat-log" id="chatLog"></div>
+
+        <div class="answer-panel" id="answerPanel">
+          <label for="answerInput">나의 답변</label>
+          <textarea id="answerInput" rows="4" placeholder="면접관 질문에 대한 답변을 입력하세요. 구체적인 경험과 수치를 포함하면 더 좋은 피드백을 받을 수 있습니다."></textarea>
+          <div class="answer-actions">
+            <span class="char-count" id="charCount">0자</span>
+            <button class="btn-submit" id="btnSubmit" type="button" disabled>답변 제출 →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 종합 리포트 -->
+      <div class="report" id="report" hidden>
+        <div class="report-header">
+          <h2>📊 면접 종합 리포트</h2>
+          <p id="reportMeta"></p>
+        </div>
+        <div class="report-score" id="reportScore"></div>
+        <div class="report-sections" id="reportSections"></div>
+        <div class="report-actions">
+          <button class="btn-restart" id="btnRestart" type="button">🔄 다시 면접하기</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="demo.js"></script>
+</body>
+</html>

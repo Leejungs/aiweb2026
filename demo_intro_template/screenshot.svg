@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="AI 면접관 데모 화면">
+  <rect width="1280" height="720" fill="#f1f5f9"/>
+  <rect x="0" y="0" width="1280" height="56" fill="#1e293b"/>
+  <text x="40" y="36" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="18" font-weight="700">AI 면접관 - Live Demo</text>
+  <rect x="40" y="80" width="380" height="600" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <text x="64" y="120" fill="#1e293b" font-family="system-ui,sans-serif" font-size="16" font-weight="700">면접 설정</text>
+  <rect x="64" y="260" width="332" height="44" rx="22" fill="#f97316"/>
+  <text x="170" y="288" fill="#fff" font-family="system-ui,sans-serif" font-size="15" font-weight="600">면접 시작</text>
+  <rect x="440" y="80" width="800" height="600" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <text x="624" y="182" fill="#1e293b" font-family="system-ui,sans-serif" font-size="15">본인을 간단히 소개해 주세요...</text>
+  <rect x="464" y="380" width="752" height="140" rx="12" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="484" y="410" fill="#16a34a" font-family="system-ui,sans-serif" font-size="12" font-weight="700">실시간 피드백</text>
+</svg>

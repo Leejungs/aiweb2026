@@ -3,89 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- ⬇⬇⬇ 본인 정보로 교체 ⬇⬇⬇ -->
-  <title>🚀 [본인 프로젝트 이름] — by &lt;본인 익명 ID&gt;</title>
-  <meta name="description" content="[본인 프로젝트 한 줄 설명]" />
-  <!-- ⬆⬆⬆ 본인 정보로 교체 ⬆⬆⬆ -->
+  <title>🤖 AI 면접관 — by &lt;본인 익명 ID&gt;</title>
+  <meta name="description" content="AI 면접관 기반 모의 면접 및 실시간 피드백 서비스. 직무별 맞춤 질문과 답변 분석으로 면접 실력을 키우세요." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ============ HERO ============ -->
   <header class="hero">
     <div class="container">
-      <!-- ⬇⬇⬇ 본인 프로젝트로 교체 (예: "🍱 칼로리카운터") ⬇⬇⬇ -->
-      <h1>🚀 [본인 프로젝트 이름]</h1>
-      <p class="tagline">[프로젝트가 무엇을 하는지 한 줄로]</p>
-      <!-- ⬆⬆⬆ 본인 프로젝트로 교체 ⬆⬆⬆ -->
+      <h1>🤖 AI 면접관</h1>
+      <p class="tagline">AI 면접관 기반 모의 면접 및 실시간 피드백 서비스</p>
     </div>
   </header>
 
   <main class="container">
 
-    <!-- ============ 데모 카드 ============ -->
     <section class="demo-card">
-      <!-- ⬇⬇⬇ screenshot.png 를 본인 프로젝트 화면 캡쳐로 교체 ⬇⬇⬇ -->
-      <img class="screenshot" src="screenshot.png" alt="[본인 프로젝트] 데모 화면" />
-      <!-- ⬆⬆⬆ screenshot.png 를 본인 프로젝트 화면 캡쳐로 교체 ⬆⬆⬆ -->
+      <img class="screenshot" src="screenshot.svg" alt="AI 면접관 데모 화면 — 모의 면접 진행 및 실시간 피드백" />
 
       <div class="cta">
-        <!-- ⬇⬇⬇ 다음 주(10주차) 데모 띄운 후 href="#" 를 진짜 도메인으로 ⬇⬇⬇ -->
-        <a class="btn btn-primary" href="#" aria-disabled="true" title="다음 주에 살아납니다">
-          ▶ Live Demo <span class="badge">Coming Week 10</span>
+        <a class="btn btn-primary" href="demo/index.html">
+          ▶ Live Demo
         </a>
-        <!-- ⬆⬆⬆ 다음 주에 href="https://&lt;본인 ID&gt;-demo.aiweb2026.site" 로 변경 ⬆⬆⬆ -->
-
-        <!-- ⬇⬇⬇ 본인 GitHub 리포 URL 로 교체 ⬇⬇⬇ -->
-        <a class="btn btn-secondary" href="https://github.com/&lt;본인 GitHub username&gt;/&lt;본인 프로젝트 리포&gt;" target="_blank" rel="noopener">
+        <a class="btn btn-secondary" href="https://github.com/Leejungs/aiweb2026" target="_blank" rel="noopener">
           ⌨ Source on GitHub
         </a>
-        <!-- ⬆⬆⬆ 본인 GitHub 리포 URL 로 교체 ⬆⬆⬆ -->
       </div>
     </section>
 
-    <!-- ============ Tech Stack ============ -->
+    <section class="usecases">
+      <h2>🎯 어디에 쓰나</h2>
+      <ul class="usecase-list">
+        <li>
+          <strong>취업 준비생</strong>
+          <span>실전 면접 전, 직무별 예상 질문에 답하며 자신감을 키웁니다.</span>
+        </li>
+        <li>
+          <strong>이직 준비자</strong>
+          <span>경력직 면접에서 자주 나오는 STAR·기술·인성 질문을 반복 연습합니다.</span>
+        </li>
+        <li>
+          <strong>대학·부트캠프</strong>
+          <span>취업 지원 프로그램에서 1:1 면접 코칭을 AI로 보완합니다.</span>
+        </li>
+        <li>
+          <strong>자기 점검</strong>
+          <span>답변마다 강점·개선점·추천 표현을 받아 말하기 습관을 교정합니다.</span>
+        </li>
+      </ul>
+    </section>
+
     <section class="stack-section">
       <h2>🛠 Tech Stack</h2>
-      <!-- ⬇⬇⬇ 본인 프로젝트가 실제로 쓴 기술로 교체 ⬇⬇⬇ -->
       <ul class="stack">
-        <li>[기술 1]</li>
-        <li>[기술 2]</li>
-        <li>[기술 3]</li>
+        <li>OpenAI GPT-4o</li>
+        <li>LangChain</li>
+        <li>Gradio</li>
+        <li>Whisper STT</li>
+        <li>FastAPI</li>
         <li>Docker</li>
         <li>Oracle Always Free</li>
         <li>GitHub Actions</li>
       </ul>
-      <!-- ⬆⬆⬆ 본인 프로젝트가 실제로 쓴 기술로 교체 ⬆⬆⬆ -->
     </section>
 
-    <!-- ============ 어떻게 만들었나 ============ -->
     <section class="howto">
       <h2>🧠 어떻게 만들었나</h2>
-      <!-- ⬇⬇⬇ 본인 프로젝트 설명 3줄로 교체 ⬇⬇⬇ -->
       <p>
-        [무엇을 만들었나 — 프로젝트의 핵심 기능 한 문장.]
-        [어떤 기술 / 모델 / API 를 써서 어떻게 동작시키는가.]
-        [사용자가 어떻게 쓰는가 — 입력은 무엇, 출력은 무엇.]
+        취업·이직 준비생을 위한 <strong>AI 면접관 기반 모의 면접 서비스</strong>입니다.
+        지원 직무와 경력 수준에 맞는 면접 질문을 생성하고, 답변에 대한 <strong>실시간 피드백</strong>을 제공합니다.<br><br>
+        OpenAI GPT API와 LangChain으로 면접관 페르소나를 구성하고, Whisper STT로 음성·텍스트 답변을 받아 분석합니다.
+        Gradio·FastAPI 웹 UI에서 면접 세션을 진행하며, Docker로 Oracle Cloud에 배포합니다.<br><br>
+        사용자는 <strong>직무·경력</strong>을 입력하면 AI 면접관이 질문을 던지고,
+        답변마다 <strong>강점 · 개선점 · 추천 표현</strong>을 실시간으로 받을 수 있습니다.
+        세션 종료 후 종합 리포트로 면접 준비 상태를 점검합니다.
       </p>
-      <!-- ⬆⬆⬆ 본인 프로젝트 설명 3줄로 교체 ⬆⬆⬆ -->
     </section>
 
-    <!-- ============ Giscus 댓글 (8장에서 추가) ============ -->
+    <section class="flow">
+      <h2>📋 사용 흐름</h2>
+      <ol class="flow-steps">
+        <li><span class="step-num">1</span> 직무·경력 수준 선택</li>
+        <li><span class="step-num">2</span> AI 면접관과 모의 면접 시작</li>
+        <li><span class="step-num">3</span> 질문에 텍스트 또는 음성으로 답변</li>
+        <li><span class="step-num">4</span> 답변마다 실시간 피드백 확인</li>
+        <li><span class="step-num">5</span> 세션 종료 후 종합 리포트 다운로드</li>
+      </ol>
+    </section>
+
     <section id="comments" class="comments">
       <h2>💬 이 프로젝트 어떠세요?</h2>
       <p class="comments-note">
         GitHub 계정으로 로그인하면 댓글이 본인 리포의 GitHub Discussions에 자동 저장됩니다.
       </p>
 
-      <!--
-        ⬇⬇⬇ 9주차 SECTION 8 에서 giscus.app 가 자동 생성한 script 코드를 여기에 붙여넣기 ⬇⬇⬇
-        교체할 속성:
-          - data-repo
-          - data-repo-id
-          - data-category-id
-        나머지 속성은 그대로 두세요.
-      -->
       <div class="giscus"></div>
       <script src="https://giscus.app/client.js"
         data-repo="aprilslab/aiweb2026"
@@ -102,7 +113,6 @@
         crossorigin="anonymous"
         async>
       </script>
-      <!-- ⬆⬆⬆ giscus 설정값 교체 ⬆⬆⬆ -->
     </section>
   </main>
 

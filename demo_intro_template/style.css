@@ -176,6 +176,64 @@ section p {
   margin: 0;
 }
 
+/* ============ 어디에 쓰나 ============ */
+.usecase-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.usecase-list li {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+}
+.usecase-list strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.usecase-list span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ============ 사용 흐름 ============ */
+.flow-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.flow-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.85rem 1.1rem;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+.flow-steps .step-num {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 /* ============ Comments ============ */
 .comments .comments-note {
   font-size: 0.9rem;
