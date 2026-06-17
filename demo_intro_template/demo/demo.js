@@ -10,7 +10,9 @@ const state = {
   job: 'backend',
   interviewer: 'harin',
   mode: 'standard',
+  engine: 'ai',
   steps: [],
+  aiQuestions: [],
   stepIndex: 0,
   picks: [],
   confidence: 70,
@@ -21,6 +23,7 @@ const state = {
   timerId: null,
   timerLeft: 0,
   combo: 0,
+  aiBusy: false,
   stats: loadStats(),
   xp: loadXP(),
 };
@@ -188,8 +191,56 @@ function getMode() {
   return MODES[state.mode];
 }
 
-const GRADE_LABEL = { best: '좋은 선택', ok: '괜찮은 선택', poor: '아쉬운 선택' };
+const GRADE_LABEL = { best: '좋은 답변', ok: '괜찮은 답변', poor: '아쉬운 답변' };
 const GRADE_CLASS = { best: 'grade-best', ok: 'grade-ok', poor: 'grade-poor' };
+
+function isAIMode() {
+  return state.engine === 'ai';
+}
+
+function getCurrentStepData() {
+  if (isAIMode()) {
+    const q = state.aiQuestions[state.stepIndex];
+    const meta = STAGE_META[state.stepIndex];
+    return q ? { ...q, stageLabel: meta } : { stageLabel: meta };
+  }
+  return state.steps[state.stepIndex];
+}
+
+function setAILoading(on, text = 'AI 면접관 생각 중…') {
+  state.aiBusy = on;
+  $('aiLoading').hidden = !on;
+  $('aiLoadingText').textContent = text;
+  $('btnSubmitAI').disabled = on;
+  $('aiAnswerInput').disabled = on;
+}
+
+function updateEngineUI() {
+  const ai = $('engineSelect').value === 'ai';
+  $('aiKeyBox').hidden = !ai;
+  $('choiceTitle').textContent = ai ? '답변을 작성하세요' : '답변을 선택하세요';
+  if (ai) refreshAIStatus();
+}
+
+async function refreshAIStatus() {
+  const el = $('aiStatus');
+  const key = getOpenAIKey();
+  if (key) {
+    el.textContent = '🔑 OpenAI API 키 저장됨 · GPT-4o mini 사용';
+    el.className = 'ai-status ai-status--ok';
+    return;
+  }
+  try {
+    const res = await fetch(apiBase(), { method: 'OPTIONS' });
+    if (res.ok) {
+      el.textContent = '☁️ Cloudflare AI 서버 연결됨 · 배포 환경에서 자동 사용';
+      el.className = 'ai-status ai-status--ok';
+    } else throw new Error();
+  } catch {
+    el.textContent = '⚠️ OpenAI API 키를 입력하거나 Cloudflare Pages에 배포하세요';
+    el.className = 'ai-status ai-status--warn';
+  }
+}
 
 function showScreen(name) {
   $('screenStart').hidden = name !== 'start';
@@ -251,8 +302,9 @@ function updateHUD() {
 }
 
 function renderStepBar() {
-  $('stepBar').innerHTML = state.steps.map((st, i) => {
-    const meta = st.stageLabel;
+  const steps = isAIMode() ? STAGE_META : state.steps;
+  $('stepBar').innerHTML = steps.map((st, i) => {
+    const meta = isAIMode() ? st : st.stageLabel;
     let cls = 'step-pill';
     if (i < state.stepIndex) cls += ' done';
     if (i === state.stepIndex) cls += ' active';
@@ -287,6 +339,10 @@ function startTimer() {
 
 function autoTimeout() {
   state.timedOut++;
+  if (isAIMode()) {
+    submitAIAnswer('(시간 초과 — 답변 없음)', true);
+    return;
+  }
   const data = state.steps[state.stepIndex];
   const choice = data.choices.find((c) => c.grade === 'poor') || data.choices[data.choices.length - 1];
   applyChoice(choice, true);
@@ -308,6 +364,11 @@ function typeDialogue(text, el, cb) {
 }
 
 function renderStep() {
+  if (isAIMode()) renderAIStep();
+  else renderClassicStep();
+}
+
+function renderClassicStep() {
   stopTimer();
   const data = state.steps[state.stepIndex];
   const iv = getInterviewer();
@@ -324,6 +385,9 @@ function renderStep() {
   $('choicePanel').hidden = false;
   $('feedbackPanel').hidden = true;
   $('idealBox').hidden = true;
+  $('choices').hidden = false;
+  $('aiAnswerPanel').hidden = true;
+  setAILoading(false);
 
   $('choices').innerHTML = data.choices.map((c, i) =>
     `<button class="choice-btn" type="button" data-index="${i}">
@@ -347,16 +411,122 @@ function renderStep() {
   updateHUD();
 }
 
+async function renderAIStep() {
+  stopTimer();
+  const iv = getInterviewer();
+  const meta = STAGE_META[state.stepIndex];
+
+  renderStepBar();
+  $('stepLabel').textContent = `${state.stepIndex + 1} / ${TOTAL_STEPS} · ${meta.label}`;
+  $('questionTag').textContent = 'AI';
+  $('questionTag').className = 'question-tag tag-skill';
+
+  $('storyScene').textContent = `📍 ${meta.icon} ${meta.label}`;
+  $('choicePanel').hidden = false;
+  $('feedbackPanel').hidden = true;
+  $('idealBox').hidden = true;
+  $('choices').hidden = true;
+  $('aiAnswerPanel').hidden = true;
+  $('storyNarration').textContent = '';
+  $('storyDialogue').innerHTML = `<strong>${iv.name}:</strong> "<span class="type-cursor">질문 생성 중…</span>"`;
+
+  syncStageCharacters({ interviewerSpeaking: true, playerSpeaking: false });
+  updateHUD();
+  setAILoading(true, '🤖 AI 면접관이 질문을 준비 중…');
+
+  try {
+    if (!state.aiQuestions[state.stepIndex]) {
+      const q = await generateAIQuestion({
+        job: state.job,
+        interviewerId: state.interviewer,
+        stage: meta,
+        stepIndex: state.stepIndex,
+      });
+      state.aiQuestions[state.stepIndex] = q;
+    }
+
+    const data = state.aiQuestions[state.stepIndex];
+    $('questionTag').textContent = data.tag || 'AI';
+    $('storyNarration').textContent = data.narration.replace?.('면접관', iv.name) || data.narration;
+
+    setAILoading(false);
+    $('aiAnswerPanel').hidden = false;
+    $('aiAnswerInput').value = '';
+    $('aiCharCount').textContent = '0자';
+
+    typeDialogue(data.dialogue, $('storyDialogue'), () => {
+      syncStageCharacters({ interviewerSpeaking: true, playerSpeaking: false });
+      $('aiAnswerInput').focus();
+      startTimer();
+    });
+  } catch (err) {
+    setAILoading(false);
+    $('storyDialogue').innerHTML = `<strong>${iv.name}:</strong> <span class="ai-error">⚠️ ${err.message}</span>`;
+    $('aiAnswerPanel').hidden = true;
+  }
+}
+
+async function submitAIAnswer(text, fromTimeout = false) {
+  if (state.aiBusy) return;
+  const answer = (text ?? $('aiAnswerInput').value).trim();
+  if (!answer && !fromTimeout) {
+    $('aiAnswerInput').focus();
+    return;
+  }
+
+  stopTimer();
+  const data = getCurrentStepData();
+  setAILoading(true, '✨ AI가 답변을 분석 중…');
+  $('aiAnswerPanel').hidden = true;
+
+  try {
+    const result = await evaluateAIAnswer({
+      job: state.job,
+      interviewerId: state.interviewer,
+      stage: data.stageLabel,
+      stepIndex: state.stepIndex,
+      question: data.dialogue,
+      answer: fromTimeout ? '(무응답/시간초과)' : answer,
+    });
+
+    if (fromTimeout) {
+      result.feedback = '⏱ 시간 초과! ' + result.feedback;
+      if (result.grade !== 'poor') result.grade = 'poor';
+      result.score = 1;
+    }
+
+    applyChoiceResult({
+      grade: result.grade,
+      score: result.score,
+      feedback: result.feedback,
+      ideal: result.ideal,
+      skills: result.skills,
+      text: answer,
+    }, fromTimeout);
+  } catch (err) {
+    setAILoading(false);
+    $('aiAnswerPanel').hidden = false;
+    $('hintToast').hidden = false;
+    $('hintToast').textContent = `⚠️ AI 오류: ${err.message}`;
+  } finally {
+    setAILoading(false);
+  }
+}
+
 function selectChoice(index) {
   const data = state.steps[state.stepIndex];
   applyChoice(data.choices[index], false);
 }
 
 function applyChoice(choice, fromTimeout) {
-  const data = state.steps[state.stepIndex];
+  applyChoiceResult(choice, fromTimeout);
+}
+
+function applyChoiceResult(choice, fromTimeout) {
+  const data = getCurrentStepData();
   const iv = getInterviewer();
 
-  if (fromTimeout) {
+  if (fromTimeout && !isAIMode()) {
     choice = { ...choice, feedback: '⏱ 시간 초과! ' + choice.feedback };
   }
 
@@ -415,7 +585,30 @@ function applyChoice(choice, fromTimeout) {
 }
 
 function useHint() {
-  if (state.hintsLeft <= 0) return;
+  if (state.hintsLeft <= 0 || state.aiBusy) return;
+
+  if (isAIMode()) {
+    const data = getCurrentStepData();
+    if (!data.dialogue) return;
+    state.hintsLeft--;
+    state.hintsUsed++;
+    $('hintToast').hidden = false;
+    $('hintToast').textContent = '💡 힌트 생성 중…';
+    fetchAIHint({
+      job: state.job,
+      interviewerId: state.interviewer,
+      stage: data.stageLabel,
+      stepIndex: state.stepIndex,
+      question: data.dialogue,
+    }).then((hint) => {
+      $('hintToast').textContent = `💡 힌트: ${hint}`;
+    }).catch(() => {
+      $('hintToast').textContent = '💡 힌트: STAR 형식(상황·과제·행동·결과)으로 구조화해 답하세요.';
+    });
+    updateHUD();
+    return;
+  }
+
   const data = state.steps[state.stepIndex];
   const best = data.choices.find((c) => c.grade === 'best');
   if (!best) return;
@@ -475,7 +668,7 @@ function showResult() {
     ${finalPct >= 75 ? '<span class="trophy-3d">🏆</span>' : ''}
     <div class="score-circle">${finalPct}<span>점</span></div>
     <p class="score-grade">${grade}</p>
-    <p class="score-sub">${JOBS[state.job].icon} ${JOBS[state.job].label} · ${getMode().label} · ${bestCount}/${TOTAL_STEPS} 좋은 선택</p>`;
+    <p class="score-sub">${JOBS[state.job].icon} ${JOBS[state.job].label} · ${getMode().label}${isAIMode() ? ' · 🤖 AI' : ''} · ${bestCount}/${TOTAL_STEPS} 좋은 답변</p>`;
 
   if (finalPct >= 75) launchConfetti();
   addXP(Math.round(finalPct / 3));
@@ -491,7 +684,8 @@ function showResult() {
         <strong>${p.step}단계 · ${p.scene}</strong>
         <span class="log-badge ${GRADE_CLASS[p.choice.grade]}">${GRADE_LABEL[p.choice.grade]}</span>
       </div>
-      <p class="log-q">Q: ${p.question.slice(0, 70)}…</p>
+      <p class="log-q">Q: ${p.question.slice(0, 80)}${p.question.length > 80 ? '…' : ''}</p>
+      ${p.choice.text ? `<p class="log-a">A: ${p.choice.text.slice(0, 100)}${p.choice.text.length > 100 ? '…' : ''}</p>` : ''}
       <p>${p.choice.feedback}</p>
     </div>`).join('');
 
@@ -524,6 +718,23 @@ function startInterview() {
   state.job = $('jobSelect').value;
   state.interviewer = $('interviewerSelect').value;
   state.mode = $('modeSelect').value;
+  state.engine = $('engineSelect').value;
+  saveOpenAIKey($('openaiKey').value);
+
+  if (isAIMode() && !getOpenAIKey()) {
+    refreshAIStatus().then(() => {
+      if ($('aiStatus').classList.contains('ai-status--warn')) {
+        $('aiStatus').textContent = '⚠️ OpenAI API 키를 입력하거나 Cloudflare Pages에 배포해 주세요.';
+        return;
+      }
+      beginInterview();
+    });
+    return;
+  }
+  beginInterview();
+}
+
+function beginInterview() {
   state.stepIndex = 0;
   state.picks = [];
   state.confidence = 70;
@@ -532,8 +743,9 @@ function startInterview() {
   state.timedOut = 0;
   state.hintsLeft = getMode().hints;
   state.combo = 0;
+  state.aiQuestions = [];
   $('comboDisplay').classList.remove('visible');
-  state.steps = buildSession(state.job);
+  state.steps = isAIMode() ? [] : buildSession(state.job);
 
   showScreen('play');
   $('hintToast').hidden = true;
@@ -575,6 +787,13 @@ function initSetupOptions() {
   });
   $('modeDesc').textContent = MODES.standard.desc;
 
+  $('engineSelect').addEventListener('change', updateEngineUI);
+  $('openaiKey').addEventListener('input', () => {
+    saveOpenAIKey($('openaiKey').value);
+    refreshAIStatus();
+  });
+  $('openaiKey').value = getOpenAIKey();
+
   ['jobSelect', 'interviewerSelect'].forEach((id) => {
     $(id).addEventListener('change', renderSetupPreview);
   });
@@ -583,9 +802,17 @@ $('btnStart').addEventListener('click', startInterview);
 $('btnNext').addEventListener('click', nextStep);
 $('btnRestart').addEventListener('click', restart);
 $('btnHint').addEventListener('click', useHint);
+$('btnSubmitAI').addEventListener('click', () => submitAIAnswer());
+$('aiAnswerInput').addEventListener('input', () => {
+  $('aiCharCount').textContent = `${$('aiAnswerInput').value.length}자`;
+});
+$('aiAnswerInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitAIAnswer();
+});
 
 initSetupOptions();
 renderSetupPreview();
 updateStartStats();
 updateXPBar();
+updateEngineUI();
 initParallaxTilt();

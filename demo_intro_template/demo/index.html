@@ -62,6 +62,13 @@
         <h3 class="setup-title">면접 설정</h3>
         <div class="setup-grid">
           <label class="field">
+            <span>🧠 면접 엔진</span>
+            <select id="engineSelect">
+              <option value="ai">🤖 AI 면접 (GPT-4o mini)</option>
+              <option value="classic">🎮 연습 (선택형)</option>
+            </select>
+          </label>
+          <label class="field">
             <span>💼 지원 직무</span>
             <select id="jobSelect"></select>
           </label>
@@ -73,6 +80,13 @@
             <span>⚙️ 면접 모드</span>
             <select id="modeSelect"></select>
           </label>
+        </div>
+        <div class="ai-key-box" id="aiKeyBox">
+          <label class="field field-full">
+            <span>🔑 OpenAI API Key <small>(로컬·백업용, 브라우저에만 저장)</small></span>
+            <input type="password" id="openaiKey" placeholder="sk-..." autocomplete="off" />
+          </label>
+          <p class="ai-status" id="aiStatus">AI 연결 확인 중…</p>
         </div>
         <p class="mode-desc" id="modeDesc"></p>
       </div>
@@ -107,10 +121,10 @@
       <p class="preview-greeting" id="previewGreeting"></p>
 
       <div class="feature-list">
-        <span>🎲 매번 다른 질문</span>
+        <span>🤖 GPT-4o mini</span>
+        <span>🎲 AI 맞춤 질문</span>
         <span>⚡ 실시간 피드백</span>
         <span>📊 역량 리포트</span>
-        <span>🏅 업적 시스템</span>
       </div>
 
       <button class="btn-start" id="btnStart" type="button">
@@ -196,8 +210,19 @@
       </div>
 
       <div class="choice-panel glass-panel" id="choicePanel">
-        <p class="choice-title">답변을 선택하세요</p>
+        <p class="choice-title" id="choiceTitle">답변을 선택하세요</p>
         <div class="choices" id="choices"></div>
+        <div class="ai-answer-panel" id="aiAnswerPanel" hidden>
+          <textarea id="aiAnswerInput" rows="4" placeholder="면접관 질문에 대한 답변을 자유롭게 작성하세요… (STAR 형식 추천)"></textarea>
+          <div class="ai-answer-actions">
+            <span class="ai-char-count" id="aiCharCount">0자</span>
+            <button class="btn-submit-ai" id="btnSubmitAI" type="button">📤 답변 제출</button>
+          </div>
+        </div>
+        <div class="ai-loading" id="aiLoading" hidden>
+          <span class="ai-loading-dot"></span>
+          <span id="aiLoadingText">AI 면접관 생각 중…</span>
+        </div>
       </div>
 
       <div class="feedback-panel glass-panel feedback-glow" id="feedbackPanel" hidden>
@@ -251,6 +276,7 @@
 
   <script src="questions.js"></script>
   <script src="characters.js"></script>
+  <script src="ai-client.js"></script>
   <script src="demo.js"></script>
 </body>
 </html>
