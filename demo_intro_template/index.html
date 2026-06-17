@@ -251,9 +251,40 @@
         2026 AI 웹 융합 · 9주차 Showcase ·
         <a href="https://aiweb2026.site">aiweb2026.site</a>
       </p>
+      <button type="button" class="footer-settings" id="btnSettings">⚙️ 환경 설정</button>
     </div>
   </footer>
 
+  <div class="settings-backdrop" id="settingsBackdrop" hidden></div>
+  <aside class="settings-modal" id="settingsModal" hidden aria-labelledby="settingsTitle">
+    <div class="settings-head">
+      <h2 id="settingsTitle">⚙️ 환경 설정</h2>
+      <button type="button" class="settings-close" id="btnSettingsClose" aria-label="닫기">✕</button>
+    </div>
+    <p class="settings-desc">데모와 동일한 설정이 적용됩니다 (브라우저 저장).</p>
+    <div class="settings-group">
+      <h3>🎨 테마</h3>
+      <label class="settings-row">
+        <span>화면 모드</span>
+        <select id="setTheme">
+          <option value="auto">시스템 자동</option>
+          <option value="light">라이트</option>
+          <option value="dark">다크</option>
+        </select>
+      </label>
+      <label class="settings-toggle">
+        <input type="checkbox" id="setReducedMotion" />
+        <span>애니메이션 줄이기</span>
+      </label>
+    </div>
+    <div class="settings-group">
+      <h3>🔊 효과음 · 🎙 음성</h3>
+      <p class="settings-desc" style="margin:0">Live Demo에서 면접관 음성·효과음을 조절할 수 있어요.</p>
+      <a class="btn btn-primary" href="demo/index.html" style="display:block;text-align:center;margin-top:0.75rem;text-decoration:none;">▶ Demo에서 설정하기</a>
+    </div>
+  </aside>
+
+  <script src="demo/settings.js"></script>
   <script src="demo/characters.js"></script>
   <script src="intro.js"></script>
   <script>

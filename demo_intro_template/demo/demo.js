@@ -69,12 +69,14 @@ function updateXPBar() {
 }
 
 function addXP(amount) {
+  const prevLevel = state.xp.level;
   state.xp.xp += amount;
   let need = xpForLevel(state.xp.level);
   while (state.xp.xp >= need) {
     state.xp.xp -= need;
     state.xp.level++;
     showFloatPop(`🎉 LEVEL UP! Lv.${state.xp.level}`, true, window.innerWidth / 2, window.innerHeight / 2);
+    if (typeof playSfx === 'function') playSfx('levelUp');
     need = xpForLevel(state.xp.level);
   }
   saveXP();
@@ -101,6 +103,7 @@ function updateCombo(grade) {
   if (state.combo >= 2) {
     el.classList.add('visible');
     $('comboCount').textContent = state.combo;
+    if (state.combo === 2 && typeof playSfx === 'function') playSfx('combo');
   } else {
     el.classList.remove('visible');
   }
@@ -317,6 +320,7 @@ function stopTimer() {
     clearInterval(state.timerId);
     state.timerId = null;
   }
+  if (typeof resetTimerTick === 'function') resetTimerTick();
 }
 
 function startTimer() {
@@ -329,6 +333,7 @@ function startTimer() {
 
   state.timerId = setInterval(() => {
     state.timerLeft--;
+    if (typeof playTimerTick === 'function') playTimerTick(state.timerLeft);
     updateHUD();
     if (state.timerLeft <= 0) {
       stopTimer();
@@ -350,6 +355,20 @@ function autoTimeout() {
 
 function typeDialogue(text, el, cb) {
   const iv = getInterviewer();
+  if (typeof stopVoice === 'function') stopVoice();
+
+  const finish = () => {
+    if (typeof speakInterviewer === 'function') speakInterviewer(text, state.interviewer);
+    if (cb) cb();
+  };
+
+  const reduced = typeof getSettings === 'function' && getSettings().reducedMotion;
+  if (reduced) {
+    el.innerHTML = `<strong>${iv.name}:</strong> "<span class="type-cursor">${text}</span>"`;
+    finish();
+    return;
+  }
+
   el.innerHTML = `<strong>${iv.name}:</strong> "<span class="type-cursor"></span>"`;
   const span = el.querySelector('.type-cursor');
   let i = 0;
@@ -358,7 +377,7 @@ function typeDialogue(text, el, cb) {
       span.textContent = text.slice(0, i + 1);
       i++;
       setTimeout(tick, 16 + Math.random() * 10);
-    } else if (cb) cb();
+    } else finish();
   };
   tick();
 }
@@ -400,6 +419,7 @@ function renderClassicStep() {
     syncStageCharacters({ interviewerSpeaking: true, playerSpeaking: false });
     $('choices').querySelectorAll('.choice-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (typeof playSfx === 'function') playSfx('click');
         stopTimer();
         selectChoice(Number(btn.dataset.index));
       });
@@ -473,6 +493,8 @@ async function submitAIAnswer(text, fromTimeout = false) {
     $('aiAnswerInput').focus();
     return;
   }
+  if (typeof stopVoice === 'function') stopVoice();
+  if (typeof playSfx === 'function') playSfx('submit');
 
   stopTimer();
   const data = getCurrentStepData();
@@ -545,6 +567,9 @@ function applyChoiceResult(choice, fromTimeout) {
   });
 
   updateCombo(choice.grade);
+  if (typeof playSfx === 'function') {
+    playSfx(choice.grade === 'best' ? 'success' : choice.grade === 'ok' ? 'ok' : 'fail');
+  }
   const xpGain = choice.grade === 'best' ? 25 + state.combo * 5 : choice.grade === 'ok' ? 12 : 5;
   addXP(xpGain);
 
@@ -658,6 +683,7 @@ function showResult() {
 
   const iv = getInterviewer();
   $('endDialogue').textContent = `"${ending}" — ${iv.name}`;
+  if (typeof speakEnding === 'function') speakEnding(ending);
 
   renderCharacter($('resultInterviewer'), 'interviewer', state.interviewer, finalPct >= 60 ? 'happy' : 'neutral');
   renderCharacter($('resultPlayer'), 'player', state.job, finalPct >= 60 ? 'happy' : finalPct >= 40 ? 'neutral' : 'sad');
@@ -675,6 +701,7 @@ function showResult() {
   else if (typeof animateScore === 'function') animateScore(document.querySelector('.score-circle'), finalPct);
 
   if (finalPct >= 75) launchConfetti();
+  if (typeof playSfx === 'function') playSfx('result');
   addXP(Math.round(finalPct / 3));
   if (typeof showToast === 'function') {
     showToast(finalPct >= 85 ? '🎉 훌륭한 면접이었어요!' : finalPct >= 60 ? '💪 조금만 더!' : '📚 다시 도전해 보세요', finalPct >= 60 ? 'success' : 'info');
@@ -762,6 +789,7 @@ function beginInterview() {
   if (typeof showToast === 'function') {
     showToast(isAIMode() ? '🤖 AI 면접을 시작합니다' : '🎮 연습 모드를 시작합니다', 'success');
   }
+  if (typeof playSfx === 'function') playSfx('start');
   renderStep();
 }
 
@@ -777,6 +805,7 @@ function nextStep() {
 
 function restart() {
   stopTimer();
+  if (typeof stopVoice === 'function') stopVoice();
   showScreen('start');
   updateStartStats();
   renderSetupPreview();

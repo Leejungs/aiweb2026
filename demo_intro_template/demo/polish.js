@@ -44,7 +44,10 @@ function initEngineCards() {
   };
 
   cards.forEach((card) => {
-    card.addEventListener('click', () => sync(card.dataset.engine));
+    card.addEventListener('click', () => {
+      if (typeof playSfx === 'function') playSfx('click');
+      sync(card.dataset.engine);
+    });
   });
   select.addEventListener('change', () => sync(select.value));
   sync(select.value);
