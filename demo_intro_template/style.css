@@ -45,6 +45,11 @@ body {
   padding: 0 1.25rem;
 }
 
+main.container {
+  position: relative;
+  z-index: 2;
+}
+
 /* ============ HERO ============ */
 .hero {
   position: relative;
@@ -132,6 +137,7 @@ body {
   gap: 1.5rem;
   margin-top: 2rem;
   perspective: 600px;
+  pointer-events: none;
 }
 .hero-char-slot {
   width: 90px;
@@ -158,6 +164,7 @@ body {
   min-height: 200px;
   position: relative;
   padding: 0;
+  pointer-events: none;
 }
 .mock-3d-label {
   position: absolute;
@@ -173,6 +180,7 @@ body {
   position: relative;
   height: 200px;
   perspective: 500px;
+  overflow: hidden;
 }
 .mock-3d-floor {
   position: absolute;
@@ -217,6 +225,7 @@ body {
 }
 .demo-card {
   position: relative;
+  z-index: 2;
   margin-top: -3rem;
   margin-bottom: var(--space-section);
   background: var(--card);
@@ -359,6 +368,8 @@ body {
 }
 
 .cta {
+  position: relative;
+  z-index: 5;
   padding: 1.5rem 1.25rem;
   display: flex;
   flex-wrap: wrap;
