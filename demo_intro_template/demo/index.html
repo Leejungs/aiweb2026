@@ -12,6 +12,47 @@
 </head>
 <body>
 
+  <div class="lobby-backdrop" id="lobbyBackdrop" aria-hidden="true">
+    <div class="lobby-ceiling">
+      <span class="lobby-light lobby-light-1"></span>
+      <span class="lobby-light lobby-light-2"></span>
+      <span class="lobby-light lobby-light-3"></span>
+    </div>
+    <div class="lobby-wall">
+      <div class="lobby-window">
+        <div class="lobby-window-frame"></div>
+        <div class="lobby-cityscape"></div>
+      </div>
+      <div class="lobby-wall-clock">
+        <span class="clock-face"></span>
+        <span class="clock-label">WAITING</span>
+      </div>
+      <div class="lobby-sign-board">
+        <span class="lobby-sign-en">INTERVIEW LOUNGE</span>
+        <span class="lobby-sign-ko">면접 대기실</span>
+      </div>
+    </div>
+    <div class="lobby-floor"></div>
+    <div class="lobby-furniture">
+      <div class="lobby-chair lobby-chair-1"><span></span><span></span></div>
+      <div class="lobby-chair lobby-chair-2"><span></span><span></span></div>
+      <div class="lobby-table">
+        <span class="lobby-magazine"></span>
+        <span class="lobby-plant"></span>
+      </div>
+      <div class="lobby-reception">
+        <span class="reception-top"></span>
+        <span class="reception-label">Reception</span>
+      </div>
+      <div class="lobby-interview-door">
+        <div class="door-glass"></div>
+        <span class="door-badge">면접실</span>
+        <span class="door-status">● 준비됨</span>
+      </div>
+    </div>
+    <div class="lobby-vignette"></div>
+  </div>
+
   <div class="page-bg" aria-hidden="true">
     <span class="bg-orb bg-orb-1"></span>
     <span class="bg-orb bg-orb-2"></span>
@@ -37,7 +78,8 @@
   <main class="story-wrap">
 
     <!-- 시작: 설정 -->
-    <section class="screen screen-start glass-panel" id="screenStart">
+    <section class="screen screen-start" id="screenStart">
+      <div class="lobby-content glass-panel">
       <div class="lobby-header">
         <h2>🚪 면접 대기실</h2>
         <p>설정을 고르고 면접실로 입장하세요</p>
@@ -146,6 +188,7 @@
         <span class="btn-shine"></span>
         ▶ 면접실 입장하기
       </button>
+      </div>
     </section>
 
     <!-- 진행 -->

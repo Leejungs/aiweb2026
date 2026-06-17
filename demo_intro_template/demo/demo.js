@@ -249,6 +249,7 @@ function showScreen(name) {
   $('screenStart').hidden = name !== 'start';
   $('screenPlay').hidden = name !== 'play';
   $('screenEnd').hidden = name !== 'end';
+  document.body.classList.toggle('in-lobby', name === 'start');
 }
 
 function updateStartStats() {
@@ -858,3 +859,4 @@ updateStartStats();
 updateXPBar();
 updateEngineUI();
 initParallaxTilt();
+document.body.classList.add('in-lobby');

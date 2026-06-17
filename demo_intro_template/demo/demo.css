@@ -182,7 +182,357 @@ body {
 }
 
 /* Lobby */
-.screen-start { padding: 1.35rem; }
+.screen-start {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.lobby-content {
+  padding: 1.35rem;
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(1.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+}
+html[data-theme="dark"] .lobby-content {
+  background: rgba(30, 41, 59, 0.88);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .lobby-content {
+    background: rgba(30, 41, 59, 0.88);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* ============ 면접 대기실 배경 ============ */
+.lobby-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 35%, #78716c 100%);
+}
+body.in-lobby .lobby-backdrop { display: block; }
+body.in-lobby .page-bg { opacity: 0; }
+
+.lobby-ceiling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28%;
+  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-bottom: 3px solid #94a3b8;
+}
+.lobby-light {
+  position: absolute;
+  bottom: 0;
+  height: 8px;
+  background: #fef9c3;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 0 40px 12px rgba(254, 249, 195, 0.55);
+}
+.lobby-light-1 { left: 15%; width: 22%; }
+.lobby-light-2 { left: 42%; width: 28%; }
+.lobby-light-3 { right: 12%; width: 20%; }
+
+.lobby-wall {
+  position: absolute;
+  top: 28%;
+  left: 0;
+  right: 0;
+  height: 42%;
+  background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+.lobby-window {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 70vw);
+  height: 75%;
+  background: #bae6fd;
+  border: 6px solid #64748b;
+  border-radius: 4px;
+  box-shadow: inset 0 0 30px rgba(255,255,255,0.4);
+  overflow: hidden;
+}
+.lobby-window-frame {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #64748b 0%, transparent 2%, transparent 48%, #64748b 50%, transparent 52%, transparent 98%, #64748b 100%),
+    linear-gradient(180deg, #64748b 0%, transparent 3%, transparent 97%, #64748b 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+.lobby-cityscape {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #7dd3fc 0%, #bae6fd 40%, transparent 70%),
+    linear-gradient(90deg, transparent 10%, #475569 12%, #475569 18%, transparent 20%),
+    linear-gradient(90deg, transparent 30%, #334155 32%, #334155 42%, transparent 44%),
+    linear-gradient(90deg, transparent 55%, #64748b 57%, #64748b 65%, transparent 67%),
+    linear-gradient(90deg, transparent 75%, #475569 77%, #475569 85%, transparent 87%);
+  background-size: 100% 100%;
+  background-position: bottom;
+  opacity: 0.85;
+}
+
+.lobby-wall-clock {
+  position: absolute;
+  top: 12%;
+  left: 8%;
+  text-align: center;
+}
+.clock-face {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: 3px solid #475569;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  position: relative;
+}
+.clock-face::before,
+.clock-face::after {
+  content: '';
+  position: absolute;
+  background: #334155;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+}
+.clock-face::before {
+  width: 2px;
+  height: 14px;
+  transform: translateX(-50%) rotate(30deg);
+}
+.clock-face::after {
+  width: 2px;
+  height: 10px;
+  transform: translateX(-50%) rotate(120deg);
+}
+.clock-label {
+  display: block;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.lobby-sign-board {
+  position: absolute;
+  top: 10%;
+  right: 6%;
+  padding: 0.5rem 0.85rem;
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+  border-radius: 6px;
+  border: 2px solid #475569;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  text-align: center;
+}
+.lobby-sign-en {
+  display: block;
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #94a3b8;
+}
+.lobby-sign-ko {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #fef08a;
+  text-shadow: 0 0 12px rgba(254, 240, 138, 0.5);
+}
+
+.lobby-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32%;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(180deg, #a8a29e 0%, #78716c 100%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  transform: perspective(400px) rotateX(12deg);
+  transform-origin: center top;
+  box-shadow: inset 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.lobby-furniture {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38%;
+  pointer-events: none;
+}
+
+.lobby-chair {
+  position: absolute;
+  bottom: 18%;
+  width: 52px;
+  height: 56px;
+}
+.lobby-chair span:first-child {
+  display: block;
+  width: 44px;
+  height: 28px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #475569, #334155);
+  border-radius: 8px 8px 4px 4px;
+  box-shadow: 0 4px 0 #1e293b;
+}
+.lobby-chair span:last-child {
+  display: block;
+  width: 40px;
+  height: 22px;
+  margin: 2px auto 0;
+  background: #64748b;
+  border-radius: 4px;
+}
+.lobby-chair-1 { left: 6%; transform: scale(0.9); opacity: 0.85; }
+.lobby-chair-2 { left: 16%; transform: scale(0.95); }
+
+.lobby-table {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 36px;
+  background: linear-gradient(180deg, #d6d3d1, #a8a29e);
+  border-radius: 4px;
+  box-shadow: 0 6px 0 #78716c;
+}
+.lobby-magazine {
+  position: absolute;
+  top: -14px;
+  left: 12px;
+  width: 28px;
+  height: 18px;
+  background: linear-gradient(135deg, #f97316, #0ea5e9);
+  border-radius: 2px;
+  transform: rotate(-8deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.lobby-plant {
+  position: absolute;
+  top: -28px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: #22c55e;
+  border-radius: 50% 50% 40% 40%;
+  box-shadow: 0 0 0 8px #15803d, 0 0 0 12px #166534;
+}
+
+.lobby-reception {
+  position: absolute;
+  bottom: 12%;
+  right: 4%;
+  width: 100px;
+  height: 48px;
+}
+.reception-top {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #f8fafc, #cbd5e1);
+  border-radius: 6px 6px 0 0;
+  border: 2px solid #94a3b8;
+  box-shadow: 0 8px 0 #64748b;
+}
+.reception-label {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.lobby-interview-door {
+  position: absolute;
+  bottom: 10%;
+  right: 22%;
+  width: 72px;
+  height: 110px;
+}
+.door-glass {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(186, 230, 253, 0.7), rgba(148, 163, 184, 0.5));
+  border: 4px solid #64748b;
+  border-radius: 4px 4px 0 0;
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.3), 0 0 24px rgba(14, 165, 233, 0.25);
+  animation: door-glow 3s ease-in-out infinite;
+}
+@keyframes door-glow {
+  0%, 100% { box-shadow: inset 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(14, 165, 233, 0.2); }
+  50% { box-shadow: inset 0 0 20px rgba(255,255,255,0.4), 0 0 32px rgba(14, 165, 233, 0.45); }
+}
+.door-badge {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #0f172a;
+  background: rgba(255,255,255,0.85);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.door-status {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #22c55e;
+  white-space: nowrap;
+}
+
+.lobby-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(15, 23, 42, 0.35) 100%);
+  pointer-events: none;
+}
+
+body.in-lobby .story-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 520px) {
+  .lobby-chair-2,
+  .lobby-reception,
+  .lobby-wall-clock { display: none; }
+  .lobby-interview-door { right: 5%; transform: scale(0.88); }
+  .lobby-sign-board { transform: scale(0.85); transform-origin: top right; }
+}
+
 .lobby-header {
   text-align: center;
   margin-bottom: 1.15rem;
