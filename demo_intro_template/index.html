@@ -6,6 +6,7 @@
   <title>🤖 AI 면접관 — by &lt;본인 익명 ID&gt;</title>
   <meta name="description" content="AI 면접관 기반 모의 면접 및 실시간 피드백 서비스. 직무별 맞춤 질문과 답변 분석으로 면접 실력을 키우세요." />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="demo/characters.css" />
 </head>
 <body>
 
@@ -24,6 +25,11 @@
         <span>🎲 랜덤 질문 80+</span>
         <span>📊 역량 리포트</span>
       </div>
+      <div class="hero-3d-chars" aria-hidden="true">
+        <div class="hero-char-slot" id="heroInterviewer"></div>
+        <div class="hero-char-vs">VS</div>
+        <div class="hero-char-slot" id="heroPlayer"></div>
+      </div>
     </div>
   </header>
 
@@ -34,23 +40,14 @@
         <span class="live-dot"></span> Live Demo Preview
       </div>
 
-      <div class="mock-preview" aria-hidden="true">
-        <div class="mock-topbar">
-          <span class="mock-dot red"></span><span class="mock-dot yellow"></span><span class="mock-dot green"></span>
-          <span class="mock-url">aiweb2026.site/demo</span>
-        </div>
-        <div class="mock-body">
-          <div class="mock-sidebar">
-            <div class="mock-avatar">👩‍💼</div>
-            <div class="mock-line w80"></div>
-            <div class="mock-line w60"></div>
-            <div class="mock-btn">▶ 시작</div>
-          </div>
-          <div class="mock-main">
-            <div class="mock-bubble interviewer">"자기소개 부탁드릴게요…"</div>
-            <div class="mock-choice active">A · STAR 형식으로 답변</div>
-            <div class="mock-choice">B · 경력만 길게 설명</div>
-            <div class="mock-feedback">✓ 구조적 답변 — 좋은 선택!</div>
+      <div class="mock-preview mock-preview-3d" aria-hidden="true">
+        <div class="mock-3d-label">✨ 3D 면접실 프리뷰</div>
+        <div class="mock-3d-scene">
+          <div class="mock-3d-floor"></div>
+          <div class="mock-3d-desk"></div>
+          <div class="mock-3d-chars">
+            <div class="char-slot char-slot--sm" id="mockIv"></div>
+            <div class="char-slot char-slot--sm" id="mockPl"></div>
           </div>
         </div>
       </div>
@@ -66,6 +63,11 @@
     </section>
 
     <section class="highlights">
+      <article class="highlight-card">
+        <span class="highlight-icon">✨</span>
+        <strong>3D 치비 면접실</strong>
+        <p>귀여운 3D 캐릭터와 입체 면접실에서 몰입 체험</p>
+      </article>
       <article class="highlight-card">
         <span class="highlight-icon">🎯</span>
         <strong>5단계 시뮬레이션</strong>
@@ -192,5 +194,14 @@
       </p>
     </div>
   </footer>
+  <script src="demo/characters.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCharacter(document.getElementById('heroInterviewer'), 'interviewer', 'harin', 'speaking');
+      renderCharacter(document.getElementById('heroPlayer'), 'player', 'backend', 'listening');
+      renderCharacter(document.getElementById('mockIv'), 'interviewer', 'harin', 'neutral');
+      renderCharacter(document.getElementById('mockPl'), 'player', 'frontend', 'neutral');
+    });
+  </script>
 </body>
 </html>

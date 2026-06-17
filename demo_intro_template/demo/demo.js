@@ -4,6 +4,7 @@
 
 const TOTAL_STEPS = 5;
 const STORAGE_KEY = 'aiweb2026_interview_stats';
+const XP_KEY = 'aiweb2026_interview_xp';
 
 const state = {
   job: 'backend',
@@ -19,7 +20,9 @@ const state = {
   timedOut: 0,
   timerId: null,
   timerLeft: 0,
+  combo: 0,
   stats: loadStats(),
+  xp: loadXP(),
 };
 
 const $ = (id) => document.getElementById(id);
@@ -36,6 +39,120 @@ function loadStats() {
 
 function saveStats(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadXP() {
+  try {
+    return JSON.parse(localStorage.getItem(XP_KEY)) || { level: 1, xp: 0 };
+  } catch {
+    return { level: 1, xp: 0 };
+  }
+}
+
+function saveXP() {
+  localStorage.setItem(XP_KEY, JSON.stringify(state.xp));
+}
+
+function xpForLevel(lv) {
+  return 80 + (lv - 1) * 40;
+}
+
+function updateXPBar() {
+  const need = xpForLevel(state.xp.level);
+  const pct = Math.min(100, Math.round((state.xp.xp / need) * 100));
+  $('xpLevel').textContent = state.xp.level;
+  $('xpText').textContent = `${state.xp.xp} / ${need} XP`;
+  $('xpFill').style.width = `${pct}%`;
+}
+
+function addXP(amount) {
+  state.xp.xp += amount;
+  let need = xpForLevel(state.xp.level);
+  while (state.xp.xp >= need) {
+    state.xp.xp -= need;
+    state.xp.level++;
+    showFloatPop(`🎉 LEVEL UP! Lv.${state.xp.level}`, true, window.innerWidth / 2, window.innerHeight / 2);
+    need = xpForLevel(state.xp.level);
+  }
+  saveXP();
+  updateXPBar();
+}
+
+function showFloatPop(text, positive, x, y) {
+  const el = document.createElement('div');
+  el.className = `float-pop ${positive ? 'positive' : 'negative'}`;
+  el.textContent = text;
+  el.style.left = `${x - 40}px`;
+  el.style.top = `${y - 20}px`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1200);
+}
+
+function updateCombo(grade) {
+  const el = $('comboDisplay');
+  if (grade === 'best') {
+    state.combo++;
+  } else {
+    state.combo = 0;
+  }
+  if (state.combo >= 2) {
+    el.classList.add('visible');
+    $('comboCount').textContent = state.combo;
+  } else {
+    el.classList.remove('visible');
+  }
+}
+
+function launchConfetti() {
+  const canvas = $('confettiCanvas');
+  if (!canvas) return;
+  canvas.hidden = false;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#f97316', '#0ea5e9', '#8b5cf6', '#22c55e', '#fbbf24', '#ec4899'];
+  const pieces = Array.from({ length: 80 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    r: 4 + Math.random() * 6,
+    c: colors[Math.floor(Math.random() * colors.length)],
+    vy: 2 + Math.random() * 4,
+    vx: -2 + Math.random() * 4,
+    rot: Math.random() * 360,
+  }));
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach((p) => {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.rot += 4;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rot * Math.PI) / 180);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.6);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 120) requestAnimationFrame(draw);
+    else canvas.hidden = true;
+  }
+  draw();
+}
+
+function initParallaxTilt() {
+  const room = $('room3d');
+  if (!room || window.matchMedia('(pointer: coarse)').matches) return;
+  room.addEventListener('mousemove', (e) => {
+    const rect = room.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    room.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 5}deg)`;
+  });
+  room.addEventListener('mouseleave', () => {
+    room.style.transform = '';
+  });
 }
 
 function shuffle(arr) {
@@ -257,6 +374,21 @@ function applyChoice(choice, fromTimeout) {
     skills: choice.skills || {},
   });
 
+  updateCombo(choice.grade);
+  const xpGain = choice.grade === 'best' ? 25 + state.combo * 5 : choice.grade === 'ok' ? 12 : 5;
+  addXP(xpGain);
+
+  const wrap = $('stagePlayerWrap');
+  if (wrap) {
+    const rect = wrap.getBoundingClientRect();
+    showFloatPop(
+      choice.grade === 'best' ? `+${rapportDelta} 호감 ✨` : choice.grade === 'poor' ? `${confDelta} 자신감` : '+OK',
+      choice.grade !== 'poor',
+      rect.left + rect.width / 2,
+      rect.top
+    );
+  }
+
   $('choicePanel').hidden = true;
   $('feedbackPanel').hidden = false;
 
@@ -340,9 +472,13 @@ function showResult() {
   const bestCount = state.picks.filter((p) => p.choice.grade === 'best').length;
 
   $('resultScore').innerHTML = `
+    ${finalPct >= 75 ? '<span class="trophy-3d">🏆</span>' : ''}
     <div class="score-circle">${finalPct}<span>점</span></div>
     <p class="score-grade">${grade}</p>
     <p class="score-sub">${JOBS[state.job].icon} ${JOBS[state.job].label} · ${getMode().label} · ${bestCount}/${TOTAL_STEPS} 좋은 선택</p>`;
+
+  if (finalPct >= 75) launchConfetti();
+  addXP(Math.round(finalPct / 3));
 
   $('skillRadar').innerHTML = Object.entries(skills).map(([k, v]) => {
     const labels = { structure: '구조력', communication: '소통', technical: '직무', motivation: '동기' };
@@ -395,6 +531,8 @@ function startInterview() {
   state.hintsUsed = 0;
   state.timedOut = 0;
   state.hintsLeft = getMode().hints;
+  state.combo = 0;
+  $('comboDisplay').classList.remove('visible');
   state.steps = buildSession(state.job);
 
   showScreen('play');
@@ -449,3 +587,5 @@ $('btnHint').addEventListener('click', useHint);
 initSetupOptions();
 renderSetupPreview();
 updateStartStats();
+updateXPBar();
+initParallaxTilt();

@@ -125,7 +125,96 @@ body {
   font-weight: 600;
 }
 
-/* ============ DEMO CARD ============ */
+.hero-3d-chars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  perspective: 600px;
+}
+.hero-char-slot {
+  width: 90px;
+  height: 110px;
+  filter: drop-shadow(0 12px 20px rgba(0,0,0,0.2));
+  animation: hero-float 3s ease-in-out infinite;
+}
+.hero-char-slot:last-child { animation-delay: -1.5s; }
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.hero-char-vs {
+  font-size: 1.1rem;
+  font-weight: 900;
+  opacity: 0.85;
+  padding-bottom: 2rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* 3D mock preview */
+.mock-preview-3d {
+  background: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 30%, #cbd5e1 30%, #94a3b8 100%);
+  min-height: 200px;
+  position: relative;
+  padding: 0;
+}
+.mock-3d-label {
+  position: absolute;
+  top: 0.65rem;
+  left: 1rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.06em;
+  z-index: 2;
+}
+.mock-3d-scene {
+  position: relative;
+  height: 200px;
+  perspective: 500px;
+}
+.mock-3d-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70%;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+  transform: perspective(180px) rotateX(55deg);
+  transform-origin: center top;
+}
+.mock-3d-desk {
+  position: absolute;
+  bottom: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 36px;
+  background: linear-gradient(180deg, #d6d3d1, #78716c);
+  border-radius: 4px;
+  box-shadow: 0 5px 0 #57534e;
+}
+.mock-3d-chars {
+  position: absolute;
+  bottom: 8%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 2rem;
+}
+
+.highlight-card {
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.highlight-card:hover {
+  transform: translateY(-6px) rotateX(4deg);
+}
 .demo-card {
   position: relative;
   margin-top: -3rem;
@@ -135,6 +224,12 @@ body {
   border-radius: calc(var(--radius) + 4px);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.demo-card:hover {
+  transform: translateY(-4px) rotateX(2deg);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
 }
 
 .demo-card-label {

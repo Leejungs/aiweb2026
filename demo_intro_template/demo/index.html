@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🤖 AI 면접관 — Live Demo</title>
   <meta name="description" content="랜덤 출제 · 실시간 피드백 · 5단계 모의 면접 시뮬레이션" />
+  <link rel="stylesheet" href="characters.css" />
   <link rel="stylesheet" href="demo.css" />
 </head>
 <body>
@@ -27,6 +28,8 @@
       <span class="demo-badge"><span class="live-pulse"></span> Live</span>
     </div>
   </header>
+
+  <canvas id="confettiCanvas" hidden></canvas>
 
   <main class="story-wrap">
 
@@ -74,7 +77,15 @@
         <p class="mode-desc" id="modeDesc"></p>
       </div>
 
-      <div class="duel-preview" id="previewCard">
+      <div class="xp-bar-wrap" id="xpBarWrap">
+        <div class="xp-bar-top">
+          <span>⭐ 면접 Lv.<strong id="xpLevel">1</strong></span>
+          <span id="xpText">0 / 100 XP</span>
+        </div>
+        <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+      </div>
+
+      <div class="duel-preview-3d" id="previewCard">
         <div class="duel-char duel-char--interviewer">
           <div class="char-platform char-platform--iv"></div>
           <div class="char-slot" id="previewInterviewer"></div>
@@ -143,6 +154,8 @@
 
       <p class="hint-toast" id="hintToast" hidden></p>
 
+      <div class="combo-display" id="comboDisplay">🔥 COMBO x<span id="comboCount">0</span>!</div>
+
       <div class="progress-wrap">
         <div class="step-bar" id="stepBar"></div>
         <div class="step-header">
@@ -151,27 +164,26 @@
         </div>
       </div>
 
-      <div class="character-stage glass-panel" id="characterStage">
-        <div class="stage-label">🎬 면접실</div>
-        <div class="stage-scene">
-          <div class="stage-char stage-char--interviewer" id="stageInterviewerWrap">
-            <div class="char-platform char-platform--iv"></div>
-            <div class="char-slot char-slot--lg" id="stageInterviewer"></div>
-            <span class="char-badge char-badge--iv">면접관</span>
-            <strong class="char-name" id="stageInterviewerName">김하린</strong>
-            <span class="speech-bubble speech-bubble--iv" id="interviewerIndicator" hidden>질문 중…</span>
-          </div>
-          <div class="stage-desk">
-            <span class="desk-item">📋</span>
-            <span class="desk-item">💧</span>
-          </div>
-          <div class="stage-char stage-char--player" id="stagePlayerWrap">
-            <div class="char-platform char-platform--pl"></div>
-            <div class="char-slot char-slot--lg" id="stagePlayer"></div>
-            <span class="char-badge char-badge--pl">지원자</span>
-            <strong class="char-name" id="stagePlayerName">나</strong>
-            <small class="char-sub" id="stagePlayerRole">백엔드 지원자</small>
-            <span class="speech-bubble speech-bubble--pl" id="playerIndicator" hidden>답변 중…</span>
+      <div class="scene-3d-wrap" id="scene3dWrap">
+        <div class="room-3d" id="room3d">
+          <div class="room-wall-deco"></div>
+          <div class="room-floor-grid"></div>
+          <div class="room-desk-3d"></div>
+          <div class="room-particles" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="room-stage-chars">
+            <div class="room-char-slot stage-char--interviewer" id="stageInterviewerWrap">
+              <div class="char-platform char-platform--iv"></div>
+              <div class="char-slot char-slot--lg" id="stageInterviewer"></div>
+              <span class="speech-bubble speech-bubble--iv" id="interviewerIndicator" hidden>💬 질문 중</span>
+              <strong class="char-name" id="stageInterviewerName">김하린</strong>
+            </div>
+            <div class="room-char-slot stage-char--player" id="stagePlayerWrap">
+              <div class="char-platform char-platform--pl"></div>
+              <div class="char-slot char-slot--lg" id="stagePlayer"></div>
+              <span class="speech-bubble speech-bubble--pl" id="playerIndicator" hidden>✋ 답변 중</span>
+              <strong class="char-name" id="stagePlayerName">나</strong>
+              <small class="char-sub" id="stagePlayerRole">백엔드 지원자</small>
+            </div>
           </div>
         </div>
       </div>
