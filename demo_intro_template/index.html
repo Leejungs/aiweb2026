@@ -10,20 +10,54 @@
 <body>
 
   <header class="hero">
-    <div class="container">
-      <h1>🤖 AI 면접관</h1>
+    <div class="hero-bg" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+    </div>
+    <div class="container hero-inner">
+      <p class="hero-eyebrow">2026 AI 웹 융합 · 취업 준비 솔루션</p>
+      <h1><span class="hero-icon">🤖</span> AI 면접관</h1>
       <p class="tagline">AI 면접관 기반 모의 면접 및 실시간 피드백 서비스</p>
+      <div class="hero-pills">
+        <span>⚡ 실시간 피드백</span>
+        <span>🎲 랜덤 질문 80+</span>
+        <span>📊 역량 리포트</span>
+      </div>
     </div>
   </header>
 
   <main class="container">
 
     <section class="demo-card">
-      <img class="screenshot" src="screenshot.svg" alt="AI 면접관 데모 화면 — 모의 면접 진행 및 실시간 피드백" />
+      <div class="demo-card-label">
+        <span class="live-dot"></span> Live Demo Preview
+      </div>
+
+      <div class="mock-preview" aria-hidden="true">
+        <div class="mock-topbar">
+          <span class="mock-dot red"></span><span class="mock-dot yellow"></span><span class="mock-dot green"></span>
+          <span class="mock-url">aiweb2026.site/demo</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-sidebar">
+            <div class="mock-avatar">👩‍💼</div>
+            <div class="mock-line w80"></div>
+            <div class="mock-line w60"></div>
+            <div class="mock-btn">▶ 시작</div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-bubble interviewer">"자기소개 부탁드릴게요…"</div>
+            <div class="mock-choice active">A · STAR 형식으로 답변</div>
+            <div class="mock-choice">B · 경력만 길게 설명</div>
+            <div class="mock-feedback">✓ 구조적 답변 — 좋은 선택!</div>
+          </div>
+        </div>
+      </div>
 
       <div class="cta">
-        <a class="btn btn-primary" href="demo/index.html">
-          ▶ Live Demo
+        <a class="btn btn-primary btn-glow" href="demo/index.html">
+          ▶ Live Demo 체험하기
         </a>
         <a class="btn btn-secondary" href="https://github.com/Leejungs/aiweb2026" target="_blank" rel="noopener">
           ⌨ Source on GitHub
@@ -31,30 +65,71 @@
       </div>
     </section>
 
+    <section class="highlights">
+      <article class="highlight-card">
+        <span class="highlight-icon">🎯</span>
+        <strong>5단계 시뮬레이션</strong>
+        <p>자기소개부터 역질문까지 실전 흐름 그대로</p>
+      </article>
+      <article class="highlight-card">
+        <span class="highlight-icon">👥</span>
+        <strong>3명의 AI 면접관</strong>
+        <p>인성·기술·PM 스타일 면접관 선택</p>
+      </article>
+      <article class="highlight-card">
+        <span class="highlight-icon">🔥</span>
+        <strong>3가지 난이도</strong>
+        <p>연습 · 실전 · 압박 모드 + 타이머</p>
+      </article>
+    </section>
+
     <section class="usecases">
-      <h2>🎯 어디에 쓰나</h2>
+      <h2 class="section-title"><span>🎯</span> 어디에 쓰나</h2>
       <ul class="usecase-list">
         <li>
-          <strong>취업 준비생</strong>
-          <span>실전 면접 전, 직무별 예상 질문에 답하며 자신감을 키웁니다.</span>
+          <span class="usecase-icon">🎓</span>
+          <div>
+            <strong>취업 준비생</strong>
+            <span>실전 면접 전, 직무별 예상 질문에 답하며 자신감을 키웁니다.</span>
+          </div>
         </li>
         <li>
-          <strong>이직 준비자</strong>
-          <span>경력직 면접에서 자주 나오는 STAR·기술·인성 질문을 반복 연습합니다.</span>
+          <span class="usecase-icon">💼</span>
+          <div>
+            <strong>이직 준비자</strong>
+            <span>경력직 면접에서 자주 나오는 STAR·기술·인성 질문을 반복 연습합니다.</span>
+          </div>
         </li>
         <li>
-          <strong>대학·부트캠프</strong>
-          <span>취업 지원 프로그램에서 1:1 면접 코칭을 AI로 보완합니다.</span>
+          <span class="usecase-icon">🏫</span>
+          <div>
+            <strong>대학·부트캠프</strong>
+            <span>취업 지원 프로그램에서 1:1 면접 코칭을 AI로 보완합니다.</span>
+          </div>
         </li>
         <li>
-          <strong>자기 점검</strong>
-          <span>답변마다 강점·개선점·추천 표현을 받아 말하기 습관을 교정합니다.</span>
+          <span class="usecase-icon">✨</span>
+          <div>
+            <strong>자기 점검</strong>
+            <span>답변마다 강점·개선점·추천 표현을 받아 말하기 습관을 교정합니다.</span>
+          </div>
         </li>
       </ul>
     </section>
 
+    <section class="flow">
+      <h2 class="section-title"><span>📋</span> 사용 흐름</h2>
+      <ol class="flow-steps">
+        <li><span class="step-num">1</span><div><strong>직무 · 면접관 · 모드</strong><span>5가지 직무, 3명 면접관, 난이도 선택</span></div></li>
+        <li><span class="step-num">2</span><div><strong>5단계 모의 면접</strong><span>매번 다른 질문, 이지선다로 답변</span></div></li>
+        <li><span class="step-num">3</span><div><strong>실시간 피드백</strong><span>강점 · 개선 · 모범 답변 즉시 확인</span></div></li>
+        <li><span class="step-num">4</span><div><strong>HUD · 힌트 · 타이머</strong><span>자신감·호감도 게이지로 몰입 연습</span></div></li>
+        <li><span class="step-num">5</span><div><strong>종합 리포트</strong><span>역량 분석 · 업적 · 문항별 피드백</span></div></li>
+      </ol>
+    </section>
+
     <section class="stack-section">
-      <h2>🛠 Tech Stack</h2>
+      <h2 class="section-title"><span>🛠</span> Tech Stack</h2>
       <ul class="stack">
         <li>OpenAI GPT-4o</li>
         <li>LangChain</li>
@@ -68,35 +143,28 @@
     </section>
 
     <section class="howto">
-      <h2>🧠 어떻게 만들었나</h2>
-      <p>
-        취업·이직 준비생을 위한 <strong>AI 면접관 기반 모의 면접 서비스</strong>입니다.
-        지원 직무와 경력 수준에 맞는 면접 질문을 생성하고, 답변에 대한 <strong>실시간 피드백</strong>을 제공합니다.<br><br>
-        OpenAI GPT API와 LangChain으로 면접관 페르소나를 구성하고, Whisper STT로 음성·텍스트 답변을 받아 분석합니다.
-        Gradio·FastAPI 웹 UI에서 면접 세션을 진행하며, Docker로 Oracle Cloud에 배포합니다.<br><br>
-        사용자는 <strong>직무·경력</strong>을 입력하면 AI 면접관이 질문을 던지고,
-        답변마다 <strong>강점 · 개선점 · 추천 표현</strong>을 실시간으로 받을 수 있습니다.
-        세션 종료 후 종합 리포트로 면접 준비 상태를 점검합니다.
-      </p>
-    </section>
-
-    <section class="flow">
-      <h2>📋 사용 흐름</h2>
-      <ol class="flow-steps">
-        <li><span class="step-num">1</span> 직무·경력 수준 선택</li>
-        <li><span class="step-num">2</span> AI 면접관과 모의 면접 시작</li>
-        <li><span class="step-num">3</span> 질문에 텍스트 또는 음성으로 답변</li>
-        <li><span class="step-num">4</span> 답변마다 실시간 피드백 확인</li>
-        <li><span class="step-num">5</span> 세션 종료 후 종합 리포트 다운로드</li>
-      </ol>
+      <h2 class="section-title"><span>🧠</span> 어떻게 만들었나</h2>
+      <div class="howto-box">
+        <p>
+          취업·이직 준비생을 위한 <strong>AI 면접관 기반 모의 면접 서비스</strong>입니다.
+          지원 직무와 경력 수준에 맞는 면접 질문을 생성하고, 답변에 대한 <strong>실시간 피드백</strong>을 제공합니다.
+        </p>
+        <p>
+          OpenAI GPT API와 LangChain으로 면접관 페르소나를 구성하고, Whisper STT로 음성·텍스트 답변을 받아 분석합니다.
+          Gradio·FastAPI 웹 UI에서 면접 세션을 진행하며, Docker로 Oracle Cloud에 배포합니다.
+        </p>
+        <p>
+          사용자는 <strong>직무·경력</strong>을 입력하면 AI 면접관이 질문을 던지고,
+          답변마다 <strong>강점 · 개선점 · 추천 표현</strong>을 실시간으로 받을 수 있습니다.
+        </p>
+      </div>
     </section>
 
     <section id="comments" class="comments">
-      <h2>💬 이 프로젝트 어떠세요?</h2>
+      <h2 class="section-title"><span>💬</span> 이 프로젝트 어떠세요?</h2>
       <p class="comments-note">
         GitHub 계정으로 로그인하면 댓글이 본인 리포의 GitHub Discussions에 자동 저장됩니다.
       </p>
-
       <div class="giscus"></div>
       <script src="https://giscus.app/client.js"
         data-repo="aprilslab/aiweb2026"

@@ -88,16 +88,23 @@ function updateStartStats() {
 }
 
 function renderSetupPreview() {
-  const iv = INTERVIEWERS[$('interviewerSelect').value];
-  $('previewAvatar').textContent = iv.emoji;
-  $('previewName').textContent = iv.name;
-  $('previewRole').textContent = iv.role;
-  $('previewGreeting').textContent = `"${iv.greeting}"`;
+  const job = $('jobSelect').value;
+  const ivId = $('interviewerSelect').value;
+  updateLobbyCharacters(ivId, job);
+}
+
+function syncStageCharacters(extra = {}) {
+  updateStageCharacters({
+    interviewerId: state.interviewer,
+    job: state.job,
+    interviewerMood: moodFromRapport(state.rapport),
+    playerMood: moodFromConfidence(state.confidence),
+    ...extra,
+  });
 }
 
 function updateHUD() {
   const iv = getInterviewer();
-  $('hudAvatar').textContent = iv.emoji;
   $('hudName').textContent = iv.name;
   $('hudConfidence').style.width = `${state.confidence}%`;
   $('hudRapport').style.width = `${state.rapport}%`;
@@ -118,6 +125,12 @@ function updateHUD() {
   } else {
     $('timerBox').hidden = true;
   }
+
+  if (!$('screenPlay').hidden) {
+    syncStageCharacters();
+  }
+
+  renderCharacter($('hudAvatar'), 'interviewer', state.interviewer, moodFromRapport(state.rapport));
 }
 
 function renderStepBar() {
@@ -203,6 +216,7 @@ function renderStep() {
   ).join('');
 
   typeDialogue(data.dialogue, $('storyDialogue'), () => {
+    syncStageCharacters({ interviewerSpeaking: true, playerSpeaking: false });
     $('choices').querySelectorAll('.choice-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         stopTimer();
@@ -212,6 +226,7 @@ function renderStep() {
     startTimer();
   });
 
+  syncStageCharacters({ interviewerSpeaking: true, playerSpeaking: false });
   updateHUD();
 }
 
@@ -257,6 +272,12 @@ function applyChoice(choice, fromTimeout) {
 
   const isLast = state.stepIndex >= TOTAL_STEPS - 1;
   $('btnNext').textContent = isLast ? '📊 면접 결과 보기' : '다음 질문 →';
+
+  syncStageCharacters({
+    interviewerSpeaking: false,
+    playerSpeaking: true,
+    playerMood: choice.grade === 'best' ? 'happy' : choice.grade === 'poor' ? 'nervous' : 'neutral',
+  });
 
   updateHUD();
 }
@@ -311,6 +332,9 @@ function showResult() {
 
   const iv = getInterviewer();
   $('endDialogue').textContent = `"${ending}" — ${iv.name}`;
+
+  renderCharacter($('resultInterviewer'), 'interviewer', state.interviewer, finalPct >= 60 ? 'happy' : 'neutral');
+  renderCharacter($('resultPlayer'), 'player', state.job, finalPct >= 60 ? 'happy' : finalPct >= 40 ? 'neutral' : 'sad');
 
   const skills = calcSkills();
   const bestCount = state.picks.filter((p) => p.choice.grade === 'best').length;
@@ -417,7 +441,6 @@ function initSetupOptions() {
     $(id).addEventListener('change', renderSetupPreview);
   });
 }
-
 $('btnStart').addEventListener('click', startInterview);
 $('btnNext').addEventListener('click', nextStep);
 $('btnRestart').addEventListener('click', restart);

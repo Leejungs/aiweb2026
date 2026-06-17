@@ -9,48 +9,91 @@
 </head>
 <body>
 
+  <div class="page-bg" aria-hidden="true">
+    <span class="bg-orb bg-orb-1"></span>
+    <span class="bg-orb bg-orb-2"></span>
+  </div>
+
   <header class="demo-header">
     <div class="demo-header-inner">
-      <a class="back-link" href="../index.html">← 인트로로</a>
-      <h1>🤖 AI 면접관</h1>
-      <span class="demo-badge">Interactive Demo</span>
+      <a class="back-link" href="../index.html">← 인트로</a>
+      <div class="header-brand">
+        <span class="header-logo">🤖</span>
+        <div>
+          <h1>AI 면접관</h1>
+          <p class="header-sub">모의 면접 시뮬레이터</p>
+        </div>
+      </div>
+      <span class="demo-badge"><span class="live-pulse"></span> Live</span>
     </div>
   </header>
 
   <main class="story-wrap">
 
     <!-- 시작: 설정 -->
-    <section class="screen screen-start" id="screenStart">
+    <section class="screen screen-start glass-panel" id="screenStart">
+      <div class="lobby-header">
+        <h2>🚪 면접 대기실</h2>
+        <p>설정을 고르고 면접실로 입장하세요</p>
+      </div>
+
       <div class="stats-row">
-        <div class="stat-chip"><span id="statSessions">0</span><small>면접 완료</small></div>
-        <div class="stat-chip"><span id="statBest">—</span><small>최고 점수</small></div>
-        <div class="stat-chip"><span id="statStreak">—</span><small>80점+ 연속</small></div>
-      </div>
-
-      <div class="setup-grid">
-        <label class="field">
-          <span>지원 직무</span>
-          <select id="jobSelect"></select>
-        </label>
-        <label class="field">
-          <span>면접관 선택</span>
-          <select id="interviewerSelect"></select>
-        </label>
-        <label class="field">
-          <span>면접 모드</span>
-          <select id="modeSelect"></select>
-        </label>
-      </div>
-      <p class="mode-desc" id="modeDesc"></p>
-
-      <div class="character-card" id="previewCard">
-        <div class="character-avatar" id="previewAvatar">👩‍💼</div>
-        <div class="character-info">
-          <h2 id="previewName">김하린</h2>
-          <p class="character-role" id="previewRole">인사팀 면접관</p>
-          <p class="character-desc" id="previewGreeting"></p>
+        <div class="stat-chip">
+          <span class="stat-icon">📋</span>
+          <span id="statSessions">0</span>
+          <small>면접 완료</small>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-icon">🏆</span>
+          <span id="statBest">—</span>
+          <small>최고 점수</small>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-icon">🔥</span>
+          <span id="statStreak">—</span>
+          <small>80점+ 연속</small>
         </div>
       </div>
+
+      <div class="setup-card">
+        <h3 class="setup-title">면접 설정</h3>
+        <div class="setup-grid">
+          <label class="field">
+            <span>💼 지원 직무</span>
+            <select id="jobSelect"></select>
+          </label>
+          <label class="field">
+            <span>👤 면접관</span>
+            <select id="interviewerSelect"></select>
+          </label>
+          <label class="field">
+            <span>⚙️ 면접 모드</span>
+            <select id="modeSelect"></select>
+          </label>
+        </div>
+        <p class="mode-desc" id="modeDesc"></p>
+      </div>
+
+      <div class="duel-preview" id="previewCard">
+        <div class="duel-char duel-char--interviewer">
+          <div class="char-platform char-platform--iv"></div>
+          <div class="char-slot" id="previewInterviewer"></div>
+          <span class="char-label">면접관</span>
+          <strong id="previewInterviewerName">김하린</strong>
+        </div>
+        <div class="duel-center">
+          <span class="duel-icon">🤝</span>
+          <span class="duel-text">1:1 면접</span>
+        </div>
+        <div class="duel-char duel-char--player">
+          <div class="char-platform char-platform--pl"></div>
+          <div class="char-slot" id="previewPlayer"></div>
+          <span class="char-label">지원자 (나)</span>
+          <strong id="previewPlayerName">나</strong>
+          <small id="previewPlayerRole">백엔드 지원자</small>
+        </div>
+      </div>
+      <p class="preview-greeting" id="previewGreeting"></p>
 
       <div class="feature-list">
         <span>🎲 매번 다른 질문</span>
@@ -59,54 +102,93 @@
         <span>🏅 업적 시스템</span>
       </div>
 
-      <button class="btn-start" id="btnStart" type="button">▶ 면접 시작하기</button>
+      <button class="btn-start" id="btnStart" type="button">
+        <span class="btn-shine"></span>
+        ▶ 면접실 입장하기
+      </button>
     </section>
 
     <!-- 진행 -->
     <section class="screen screen-play" id="screenPlay" hidden>
 
-      <div class="hud">
-        <div class="hud-char">
-          <span id="hudAvatar">👩‍💼</span>
-          <span id="hudName">김하린</span>
-          <span id="hudMood">😊</span>
+      <div class="hud glass-panel">
+        <div class="hud-top">
+          <div class="hud-char">
+            <div class="hud-avatar-wrap" id="hudAvatar"></div>
+            <div>
+              <span id="hudName">김하린</span>
+              <small>면접 진행 중</small>
+            </div>
+          </div>
+          <span class="hud-mood" id="hudMood">😊</span>
         </div>
         <div class="hud-meters">
           <div class="meter">
-            <label>자신감 <b id="hudConfidenceVal">70</b></label>
+            <label>💪 자신감 <b id="hudConfidenceVal">70</b></label>
             <div class="meter-track"><div class="meter-fill conf" id="hudConfidence"></div></div>
           </div>
           <div class="meter">
-            <label>면접관 호감 <b id="hudRapportVal">70</b></label>
+            <label>❤️ 호감도 <b id="hudRapportVal">70</b></label>
             <div class="meter-track"><div class="meter-fill rapport" id="hudRapport"></div></div>
           </div>
         </div>
         <div class="hud-actions">
-          <div class="timer-box" id="timerBox" hidden>⏱ <span id="timerText">50</span>s</div>
+          <div class="timer-box" id="timerBox" hidden>
+            <span class="timer-icon">⏱</span>
+            <span id="timerText">50</span><small>s</small>
+          </div>
           <button class="btn-hint" id="btnHint" type="button">💡 힌트 (<span id="hintCount">2</span>)</button>
         </div>
       </div>
 
       <p class="hint-toast" id="hintToast" hidden></p>
 
-      <div class="step-bar" id="stepBar"></div>
-      <div class="step-header">
-        <span class="step-label" id="stepLabel">1 / 5</span>
-        <span class="question-tag" id="questionTag">인성</span>
+      <div class="progress-wrap">
+        <div class="step-bar" id="stepBar"></div>
+        <div class="step-header">
+          <span class="step-label" id="stepLabel">1 / 5</span>
+          <span class="question-tag" id="questionTag">인성</span>
+        </div>
       </div>
 
-      <div class="story-panel">
+      <div class="character-stage glass-panel" id="characterStage">
+        <div class="stage-label">🎬 면접실</div>
+        <div class="stage-scene">
+          <div class="stage-char stage-char--interviewer" id="stageInterviewerWrap">
+            <div class="char-platform char-platform--iv"></div>
+            <div class="char-slot char-slot--lg" id="stageInterviewer"></div>
+            <span class="char-badge char-badge--iv">면접관</span>
+            <strong class="char-name" id="stageInterviewerName">김하린</strong>
+            <span class="speech-bubble speech-bubble--iv" id="interviewerIndicator" hidden>질문 중…</span>
+          </div>
+          <div class="stage-desk">
+            <span class="desk-item">📋</span>
+            <span class="desk-item">💧</span>
+          </div>
+          <div class="stage-char stage-char--player" id="stagePlayerWrap">
+            <div class="char-platform char-platform--pl"></div>
+            <div class="char-slot char-slot--lg" id="stagePlayer"></div>
+            <span class="char-badge char-badge--pl">지원자</span>
+            <strong class="char-name" id="stagePlayerName">나</strong>
+            <small class="char-sub" id="stagePlayerRole">백엔드 지원자</small>
+            <span class="speech-bubble speech-bubble--pl" id="playerIndicator" hidden>답변 중…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-panel glass-panel interview-room">
+        <div class="room-badge">🎙 LIVE INTERVIEW</div>
         <p class="story-scene" id="storyScene"></p>
         <p class="story-narration" id="storyNarration"></p>
         <div class="story-dialogue" id="storyDialogue"></div>
       </div>
 
-      <div class="choice-panel" id="choicePanel">
-        <p class="choice-title">답변을 선택하세요 (A · B · C)</p>
+      <div class="choice-panel glass-panel" id="choicePanel">
+        <p class="choice-title">답변을 선택하세요</p>
         <div class="choices" id="choices"></div>
       </div>
 
-      <div class="feedback-panel" id="feedbackPanel" hidden>
+      <div class="feedback-panel glass-panel feedback-glow" id="feedbackPanel" hidden>
         <div class="feedback-top">
           <span class="reaction" id="reactionEmoji">😊</span>
           <span class="feedback-header" id="feedbackHeader"></span>
@@ -122,27 +204,30 @@
 
     <!-- 결과 -->
     <section class="screen screen-end" id="screenEnd" hidden>
-      <div class="character-card compact">
-        <div class="character-avatar" id="endAvatar">👩‍💼</div>
-        <div class="character-info">
-          <h2>면접 종료</h2>
-          <p class="character-desc" id="endDialogue"></p>
-        </div>
+      <div class="result-duel" id="resultDuel">
+        <div class="char-slot char-slot--sm" id="resultInterviewer"></div>
+        <span class="result-handshake">🤝</span>
+        <div class="char-slot char-slot--sm" id="resultPlayer"></div>
+      </div>
+      <div class="result-banner">
+        <span class="result-confetti">🎊</span>
+        <h2>면접 종료</h2>
+        <p id="endDialogue"></p>
       </div>
 
-      <div class="result-score" id="resultScore"></div>
+      <div class="result-score glass-panel" id="resultScore"></div>
 
-      <div class="result-section">
+      <div class="result-section glass-panel">
         <h3>📈 역량 분석</h3>
         <div class="skill-radar" id="skillRadar"></div>
       </div>
 
-      <div class="result-section">
+      <div class="result-section glass-panel">
         <h3>🏅 획득 업적</h3>
         <div class="achievements" id="achievements"></div>
       </div>
 
-      <div class="result-section">
+      <div class="result-section glass-panel">
         <h3>💡 문항별 피드백</h3>
         <div class="result-log" id="resultLog"></div>
       </div>
@@ -153,6 +238,7 @@
   </main>
 
   <script src="questions.js"></script>
+  <script src="characters.js"></script>
   <script src="demo.js"></script>
 </body>
 </html>
